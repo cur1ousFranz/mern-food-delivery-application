@@ -4,24 +4,25 @@ const Food = require('../models/foodModel')
 const getAllFoods = async (req, res) => {
     const foods = await Food.find()
 
-    res.status(200).json({ data: foods})
+    res.status(200).json(foods)
 }
 
 const storeFood = async (req, res) => {
     const { name, description, price} = req.body
-
+    const errorFields = { error : "Pleae fill in all fields"}
+    
     if(!name) {
-        return res.status(400).json({ error : "Pleae fill in all fields"})
+        return res.status(400).json(errorFields)
     }
     if(!description) {
-        return res.status(400).json({ error : "Pleae fill in all fields"})
+        return res.status(400).json(errorFields)
     }
     if(!price) {
-        return res.status(400).json({ error : "Pleae fill in all fields"})
+        return res.status(400).json(errorFields)
     }
 
     const food = await Food.create({ name, description, price})
-    res.status(200).json({message : 'Store food', data : food})
+    res.status(200).json(food)
 }
 
 const getFoodDetails = async (req, res) => {
@@ -37,7 +38,7 @@ const getFoodDetails = async (req, res) => {
         return res.status(400).json({ error : "No such food product"})
     }
 
-    res.status(200).json({message : 'Food details', food})
+    res.status(200).json(food)
 }
 
 const updateFood = async (req, res) => {
@@ -55,7 +56,7 @@ const updateFood = async (req, res) => {
         return res.status(400).json({ error : "No such food product"})
     }
 
-    res.status(200).json({data: food})
+    res.status(200).json(food)
 }
 
 const deleteFood = async (req, res) => {
