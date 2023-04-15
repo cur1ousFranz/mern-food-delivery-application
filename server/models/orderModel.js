@@ -7,15 +7,14 @@ const orderSchema = new Schema({
         type: String,
         required: true
     },
-    food_id: {
-        type: String,
+    foods: {
+        type: [{
+            food_id: { type: String, required: true },
+            quantity: { type: Number, required: true }
+        }],
         required: true
     },
-    quantity: {
-        type: Number,
-        required: true
-    },
-    total: {
+    total_amount: {
         type: Number,
         required: true
     },
