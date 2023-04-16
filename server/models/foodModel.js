@@ -13,7 +13,7 @@ const foodSchema = new Schema({
     },
     available: {
         type: Boolean,
-        required: true
+        default: true
     },
     price: {
         type: Number,
