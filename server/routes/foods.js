@@ -9,10 +9,6 @@ const {
     deleteFood
 } = require('../controllers/foodController')
 
-// AUTH MIDDLEWARE
-const requireAuth = require('../middleware/requireAuth')
-router.use(requireAuth)
-
 router.get('/api/foods', getAllFoods)
 router.post('/api/foods', storeFood)
 router.get('/api/foods/:id', getFoodDetails)
