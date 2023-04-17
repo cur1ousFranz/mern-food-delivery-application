@@ -2,7 +2,7 @@ const { isValidObjectId } = require('mongoose')
 const Delivery = require('../models/deliveryModel')
 const Order = require('../models/orderModel')
 const Customer = require('../models/customerModel')
-const extractUserId = require('../auth/auth')
+const extractUserId = require('../auth/extractUserId')
 
 const getAllDeliveries = async (req, res) => {
     const user_id = extractUserId(req)

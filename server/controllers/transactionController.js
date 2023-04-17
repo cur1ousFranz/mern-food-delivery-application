@@ -3,7 +3,7 @@ const Transaction = require('../models/transactionModel')
 const Order = require('../models/orderModel')
 const Delivery = require('../models/deliveryModel')
 const Customer = require('../models/customerModel')
-const extractUserId = require('../auth/auth')
+const extractUserId = require('../auth/extractUserId')
 
 const getAllTransactions = async (req, res) => {
     const user_id = extractUserId(req)

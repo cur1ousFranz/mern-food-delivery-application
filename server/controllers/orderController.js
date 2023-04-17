@@ -2,7 +2,7 @@ require('dotenv').config()
 const { isValidObjectId } = require('mongoose')
 const Order = require('../models/orderModel')
 const Customer = require('../models/customerModel')
-const extractUserId = require('../auth/auth')
+const extractUserId = require('../auth/extractUserId')
 
 const getAllOrders = async (req, res) => {
     const user_id = extractUserId(req)
