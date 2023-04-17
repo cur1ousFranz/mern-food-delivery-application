@@ -8,9 +8,12 @@ const getAllFoods = async (req, res) => {
 }
 
 const storeFood = async (req, res) => {
-    const { name, description, price} = req.body
+    const { merchant_id, name, description, price} = req.body
     const errorFields = { error : "Pleae fill in all fields"}
     
+    if(!merchant_id) {
+        return res.status(400).json(errorFields)
+    }
     if(!name) {
         return res.status(400).json(errorFields)
     }
@@ -21,7 +24,7 @@ const storeFood = async (req, res) => {
         return res.status(400).json(errorFields)
     }
 
-    const food = await Food.create({ name, description, price})
+    const food = await Food.create({ merchant_id, name, description, price})
     res.status(200).json(food)
 }
 
