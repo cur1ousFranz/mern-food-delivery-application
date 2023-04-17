@@ -1,9 +1,26 @@
 const { isValidObjectId } = require('mongoose')
+const createToken = require('../auth/createToken')
 const Customer = require('../models/customerModel')
+const User = require('../models/userModel')
 
 const getAllCustomers = async (req, res) => {
     const customers = await Customer.find()
     res.status(200).json(customers)
+}
+
+const storeCustomer = async (req, res) => {
+    const { email, password } = req.body
+    const role = 'customer'
+
+    try {
+        const user = await User.signup(email, password, role)
+        await Customer.create({ user_id: user._id, name: '', contact_number: '', address: ''})
+        const token = createToken(user._id)
+        res.status(200).json({ email, token })
+
+    } catch (error) {
+        res.status(500).json({ error : error.message })
+    }
 }
 
 const updateCustomer = async (req, res) => {
@@ -58,6 +75,7 @@ const getCustomerDetails = async (req, res) => {
 
 module.exports = {
     getAllCustomers,
-    updateCustomer,
-    getCustomerDetails
+    storeCustomer,
+    getCustomerDetails,
+    updateCustomer
 }
