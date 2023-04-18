@@ -8,7 +8,8 @@ import Navbar from "./components/Navbar";
 import Signin from './views/Signin';
 import Home from './views/Home';
 import Signup from './views/Signup';
-import Menu from './views/Menu';
+import Stores from './views/Stores';
+import ShowStore from './views/ShowStore';
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -21,7 +22,10 @@ function App() {
           <Route path='/' element={ <Home/> }/>
           <Route path='/signin' element={ !user ? <Signin /> : <Navigate to={'/'} /> }/>
           <Route path='/signup' element={ !user ? <Signup /> : <Navigate to={'/'} /> }/>
-          <Route path='/menu' element={ <Menu />}/>
+          <Route path='/stores' >
+            <Route index element={ <Stores />} />
+            <Route path=':id' element={ <ShowStore />} />
+          </Route>
         </Routes>
         
       </BrowserRouter>
