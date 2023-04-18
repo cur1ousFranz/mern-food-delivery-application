@@ -1,6 +1,11 @@
 const BusinessType = require('../models/businessTypeModel')
 
-const storeType = async (req, res) => {
+const getAllBusinessType = async (req, res) => {
+    const businessTypes = await BusinessType.find() 
+    res.status(200).json(businessTypes)
+}
+
+const storeBusinessType = async (req, res) => {
     const { name } = req.body
 
     if(!name){
@@ -12,5 +17,6 @@ const storeType = async (req, res) => {
 }
 
 module.exports = {
-    storeType
+    storeBusinessType,
+    getAllBusinessType
 }
