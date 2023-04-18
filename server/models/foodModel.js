@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const foodSchema = new Schema({
-    merchant_id: {
+    store_id: {
         type: String,
         required: true
     },
@@ -14,6 +14,10 @@ const foodSchema = new Schema({
     description: {
         type: String,
         required: true
+    },
+    category: {
+        type: String,
+        requierd: true
     },
     available: {
         type: Boolean,
