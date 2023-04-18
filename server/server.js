@@ -10,7 +10,7 @@ const customerRoutes = require('./routes/customer')
 const userRoutes = require('./routes/user')
 const deliveryRoutes = require('./routes/delivery')
 const transactionRoutes = require('./routes/transaction')
-const merchantRoutes = require('./routes/merchant')
+const storeRoutes = require('./routes/store')
 const businessTypeRoutes = require('./routes/businessType')
 
 app.use(express.json())
@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(foodRoutes)
 app.use(userRoutes)
-app.use(merchantRoutes)
+app.use(storeRoutes)
 app.use(businessTypeRoutes)
 
 app.use(customerRoutes)
