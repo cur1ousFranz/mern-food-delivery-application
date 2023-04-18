@@ -10,6 +10,7 @@ const orderSchema = new Schema({
     foods: {
         type: [{
             food_id: { type: String, required: true },
+            store_id: { type: String, required: true },
             quantity: { type: Number, required: true }
         }],
         required: true
