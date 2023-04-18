@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { FoodContext } from "../context/FoodContext";
 import FoodDetails from "../components/FoodDetails";
 import FoodCategories from "../components/FoodCategories";
-import NotFound from "./NotFound";
+import NotFound from "../components/NotFound";
 
 const ShowStore = () => {
     const { id } = useParams()
