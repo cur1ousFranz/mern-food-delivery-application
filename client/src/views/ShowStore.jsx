@@ -5,6 +5,7 @@ import { FoodContext } from "../context/FoodContext";
 import FoodDetails from "../components/FoodDetails";
 import FoodCategories from "../components/FoodCategories";
 import NotFound from "../components/NotFound";
+import ShowFood from "./ShowFood";
 
 const ShowStore = () => {
     const { id } = useParams()
@@ -16,6 +17,8 @@ const ShowStore = () => {
     const [foodsLoading, setFoodsLoading] = useState(false)
     const [currentFoodCategory, setcurrentFoodCategory] = useState('All')
     const [error, setError] = useState(false)
+    const [viewFood, setViewFood] = useState(false)
+    const [selectedFood, setSelectedFood] = useState(null)
 
     useEffect(() => {
 
@@ -81,66 +84,119 @@ const ShowStore = () => {
         setcurrentFoodCategory(category)
     }
 
+    const selectFood = (value, food = null) => {
+        setViewFood(value)
+        setSelectedFood(food)
+    }
 
     return (
-        <div className="px-6 md:px-24 py-8" >
+        <div className="px-4 md:px-12 py-8" >
             {!error && store && (
-                <h1 className="font-semibold text-lg md:text-2xl">{store.store_name}</h1>
+                <h1 className="font-semibold text-xl md:text-4xl">{store.store_name}
+                    <span className="inline-block ml-5">
+                        <img src="/heart.svg" alt="" className="w-5" />
+                    </span>
+                </h1>
             )}
-            
-            {!error && (
-                <div className="flex justify-between mt-4">
-                    <div className="hidden md:block w-2/4">
-                        {store && (
-                            <FoodCategories categories={store.food_categories} selectCategory={selectCategory} currentFoodCategory={currentFoodCategory} />
+
+            {!error && store && (
+                <div>
+                    <div className="md:hidden grid grid-cols-2">
+                        <div className="flex space-x-1">
+                            <img src="/star-fill.svg" className="w-3" alt="" />
+                            <p className="text-xs">4.7 (43 ratings)</p>
+                        </div>
+
+                        <div className="flex space-x-1">
+                            <img src="/clock-fill.svg" className="w-3" alt="" />
+                            <p className="text-xs">Open 24 hours</p>
+                        </div>
+
+                        <div className="flex space-x-1">
+                            <img src="/geo-alt-fill.svg" className="w-3" alt="" />
+                            <p className="text-xs">{store.store_address}</p>
+                        </div>
+                    </div>
+                    <div className="flex justify-between mt-4">
+                        <div className="hidden md:block w-full">
+                            <div className="flex space-x-6">
+                                <div className="flex space-x-1">
+                                    <img src="/star-fill.svg" className="w-4" alt="" />
+                                    <p className="inline-block">4.7 (43 ratings)</p>
+                                </div>
+
+                                <div className="flex space-x-1">
+                                    <img src="/clock-fill.svg" className="w-4" alt="" />
+                                    <p>Open 24 hours</p>
+                                </div>
+
+                                <div className="flex space-x-1">
+                                    <img src="/geo-alt-fill.svg" className="w-4" alt="" />
+                                    <p>{store.store_address}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {!viewFood && (
+                            <div className="w-full h-fit p-1 md:w-2/4 flex border-b border-gray-400 ">
+                                <input type="text" onChange={handleSearchChange} value={search} className="w-full px-2 rounded-md focus:outline-none" placeholder="Search Food" />
+                                <img src="/spoon-fork.svg" className="w-8 h-8" alt="" />
+                            </div>
                         )}
                     </div>
-                    <div className="w-full h-fit p-1 md:w-1/3 flex border-b border-gray-400 ">
-                        <input type="text" onChange={handleSearchChange} value={search} className="w-full px-2 rounded-md focus:outline-none" placeholder="Search Food" />
-                        <img src="/spoon-fork.svg" className="w-8 h-8" alt="" />
+                </div>
+            )}
+
+            {!viewFood && (
+                <div className="flex space-x-4">
+
+                    <div className="hidden md:block w-1/4 py-6 max-h-screen sticky top-0 overflow-y-auto">
+                        <h1 className="text-xl font-bold">Menu</h1>
+                        <div className="mt-6">
+                            {store && (
+                                <FoodCategories categories={store.food_categories} selectCategory={selectCategory} currentFoodCategory={currentFoodCategory} />
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="w-full">
+                        {!error && !foodsLoading && foodList && (
+                            <div className="grid grid-cols-2 gap-4 py-8 md:grid-cols-4">
+                                {foodList.map((food) => {
+                                    if (food.store_id === id) {
+                                        if (currentFoodCategory === 'All') {
+                                            return (
+                                                <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                            )
+                                        }
+
+                                        if (currentFoodCategory === food.category) {
+                                            return (
+                                                <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                            )
+                                        }
+                                    }
+                                })}
+                            </div>
+                        )}
+
+                        {!error && foodsLoading && (
+                            <div>
+                                <p>Loading</p>
+                            </div>
+                        )}
+
+                        {!error && !foodsLoading && message && (
+                            <div className="text-center shadow-md border bg-gray-200 p-24">
+                                <p className="text-2xl font-bold text-gray-500">Coming soon..</p>
+                            </div>
+                        )}
                     </div>
                 </div>
-
             )}
 
-            {!error && (
-                <div className="md:hidden">
-                    {store && (
-                        <FoodCategories categories={store.food_categories} selectCategory={selectCategory} currentFoodCategory={currentFoodCategory} />
-                    )}
-                </div>
-            )}
-
-            {!error && !foodsLoading && foodList && (
-                <div className="grid grid-cols-2 gap-4 py-8 md:grid-cols-4">
-                    {foodList.map((food) => {
-                        if (food.store_id === id) {
-                            if (currentFoodCategory === 'All') {
-                                return (
-                                    <FoodDetails food={food} key={food._id} />
-                                )
-                            }
-
-                            if (currentFoodCategory === food.category) {
-                                return (
-                                    <FoodDetails food={food} key={food._id} />
-                                )
-                            }
-                        }
-                    })}
-                </div>
-            )}
-
-            {!error && foodsLoading && (
-                <div>
-                    <p>Loading</p>
-                </div>
-            )}
-
-            {!error && !foodsLoading && message && (
-                <div className="text-center shadow-md border bg-gray-200 p-24">
-                    <p className="text-2xl font-bold text-gray-500">Coming soon..</p>
-                </div>
+            {viewFood && (
+                <ShowFood selectFood={selectFood} selectedFood={selectedFood}/>
             )}
 
             {error && (
