@@ -6,17 +6,17 @@ const FoodCategories = ({ categories, selectCategory, currentFoodCategory }) => 
     }
 
     return (
-        <div className="text-sm flex flex-wrap space-x-2 mt-2 md:text-base">
-            <div className="flex space-x-2 hover:text-gray-700">
-                <p className={currentFoodCategory === 'All' ? 'font-semibold cursor-pointer text-orange-500 underline' : 'cursor-pointer hover:underline hover:text-orange-500'} onClick={() => handleClick('All')}>All</p>
-                <p className="text-gray-400">/</p>
+        <div>
+            <div className="my-4 space-y-4">
+                <p onClick={() => handleClick('All')} className={currentFoodCategory === 'All' ? "p-2 rounded-md cursor-pointer text-lg bg-orange-200" : "p-2 rounded-md cursor-pointer text-lg text-gray-700 hover:text-gray-900 hover:bg-orange-200"}>
+                    All
+                </p>
+                {categories.map(category => (
+                    <p onClick={() => handleClick(category.category_name)} className={currentFoodCategory === category.category_name ? "p-2 rounded-md cursor-pointer text-lg bg-orange-200" : "p-2 rounded-md cursor-pointer text-lg text-gray-700 hover:text-gray-900 hover:bg-orange-200"} key={category._id}>
+                        {category.category_name}
+                    </p>
+                ))}
             </div>
-            {categories && categories.map((category) => (
-                <div className="flex space-x-2 hover:text-gray-700" key={category._id} >
-                    <p onClick={() => handleClick(category.category_name)} className={currentFoodCategory === category.category_name ? 'font-semibold cursor-pointer text-orange-500 underline' : 'cursor-pointer hover:underline hover:text-orange-500'}>{category.category_name}</p>
-                    <p className="text-gray-400">/</p>
-                </div>
-            ))}
         </div>
     );
 }
