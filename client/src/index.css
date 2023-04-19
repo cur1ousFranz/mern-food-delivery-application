@@ -7,3 +7,13 @@
     color: rgb(249 115 22 / var(--tw-text-opacity));
     text-decoration: underline;
 }
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    background-color: #F5F5F5;
+}
+
+/* Webkit browsers */
+::-webkit-scrollbar-thumb {
+    background-color: #c2bdbd;
+}
