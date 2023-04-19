@@ -15,7 +15,7 @@ function App() {
   const { user } = useContext(AuthContext)
   
   return (
-    <div className="App">
+    <div className="App max-w-screen-2xl mx-auto">
       <BrowserRouter>
         <Navbar />
         <Routes>
