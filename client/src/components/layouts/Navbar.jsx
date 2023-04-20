@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import Basket from "../basket/Basket";
 
 const Navbar = () => {
     const { user } = useContext(AuthContext)
@@ -25,10 +26,12 @@ const Navbar = () => {
                 <h1 className="hover:underline hover:text-orange-500">Services</h1>
                 <h1 className="hover:underline hover:text-orange-500">Delivery</h1>
             </div>
-            <div className="space-x-4 flex">
-                <img src="/cart4.svg" className="inline-block w-6" alt="" />
+            <div className="space-x-6 flex">
+                
+                <Basket />
+
                 {user && (
-                    <div>
+                    <div className="relative">
                         <img onClick={() => setprofileDropdown(!profileDropdown)} src="person-circle.svg" className="inline-block w-6 cursor-pointer" alt="" />
 
                         {profileDropdown && (

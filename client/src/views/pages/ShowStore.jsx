@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FoodContext } from "../context/FoodContext";
-import FoodDetails from "../components/FoodDetails";
-import FoodCategories from "../components/FoodCategories";
-import NotFound from "../components/NotFound";
-import ShowFood from "./ShowFood";
+import { FoodContext } from "../../context/FoodContext";
+import FoodDetails from "../../components/foods/FoodDetails";
+import FoodCategories from "../../components/foods/FoodCategories";
+import NotFound from "../../components/NotFound";
+import ShowFood from "../../components/foods/ShowFood";
 
 const ShowStore = () => {
     const { id } = useParams()
@@ -94,7 +94,7 @@ const ShowStore = () => {
             {!error && store && (
                 <h1 className="font-semibold text-xl md:text-4xl">{store.store_name}
                     <span className="inline-block ml-5">
-                        <img src="/heart.svg" alt="" className="w-5" />
+                        <img src="/star-fill.svg" alt="" className="w-4 md:w-5" />
                     </span>
                 </h1>
             )}
@@ -102,24 +102,21 @@ const ShowStore = () => {
             {!error && store && (
                 <div>
                     <div className="md:hidden grid grid-cols-2">
-                        <div className="flex space-x-1">
-                            <img src="/star-fill.svg" className="w-3" alt="" />
-                            <p className="text-xs">4.7 (43 ratings)</p>
-                        </div>
+                        <div className="flex-row md:flex md:space-x-3">
+                            <div className="flex space-x-1">
+                                <img src="/star-fill.svg" className="w-4" alt="" />
+                                <p className="inline-block">4.7 (43 ratings)</p>
+                            </div>
 
-                        <div className="flex space-x-1">
-                            <img src="/clock-fill.svg" className="w-3" alt="" />
-                            <p className="text-xs">Open 24 hours</p>
-                        </div>
-
-                        <div className="flex space-x-1">
-                            <img src="/geo-alt-fill.svg" className="w-3" alt="" />
-                            <p className="text-xs">{store.store_address}</p>
+                            <div className="flex space-x-1">
+                                <img src="/clock-fill.svg" className="w-4" alt="" />
+                                <p>Open 24 hours</p>
+                            </div>
                         </div>
                     </div>
                     <div className="flex justify-between mt-4">
                         <div className="hidden md:block w-full">
-                            <div className="flex space-x-6">
+                            <div className="flex-row md:flex md:space-x-3">
                                 <div className="flex space-x-1">
                                     <img src="/star-fill.svg" className="w-4" alt="" />
                                     <p className="inline-block">4.7 (43 ratings)</p>
@@ -128,11 +125,6 @@ const ShowStore = () => {
                                 <div className="flex space-x-1">
                                     <img src="/clock-fill.svg" className="w-4" alt="" />
                                     <p>Open 24 hours</p>
-                                </div>
-
-                                <div className="flex space-x-1">
-                                    <img src="/geo-alt-fill.svg" className="w-4" alt="" />
-                                    <p>{store.store_address}</p>
                                 </div>
                             </div>
                         </div>
@@ -196,7 +188,7 @@ const ShowStore = () => {
             )}
 
             {viewFood && (
-                <ShowFood selectFood={selectFood} selectedFood={selectedFood}/>
+                <ShowFood selectFood={selectFood} selectedFood={selectedFood} />
             )}
 
             {error && (

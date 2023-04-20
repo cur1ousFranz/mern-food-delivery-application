@@ -2,14 +2,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { useContext } from 'react';
 import { AuthContext } from './context/AuthContext';
 
-import Navbar from "./components/Navbar";
+import Navbar from "./components/layouts/Navbar";
 
 // PAGES
-import Signin from './views/Signin';
-import Home from './views/Home';
-import Signup from './views/Signup';
-import Stores from './views/Stores';
-import ShowStore from './views/ShowStore';
+import Signin from './views/auth/Signin';
+import Signup from './views/auth/Signup';
+import Home from './views/pages/Home';
+import Stores from './views/pages/Stores';
+import ShowStore from './views/pages/ShowStore';
 
 function App() {
   const { user } = useContext(AuthContext)

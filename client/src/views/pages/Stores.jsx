@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
-import StoreDetails from "../components/StoreDetails";
 import axios from "axios";
-import { StoreContext } from "../context/StoreContext";
+import { useContext, useEffect, useState } from "react";
+import StoreDetails from "../../components/store/StoreDetails";
+import { StoreContext } from "../../context/StoreContext";
 
 const Stores = () => {
     const { stores, dispatch } = useContext(StoreContext)
