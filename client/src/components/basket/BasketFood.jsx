@@ -2,16 +2,16 @@ import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
 
 const BasketFood = ({ food }) => {
-    const { dispatch } = useContext(BasketContext)
-    const [foodCount, setFoodCount] = useState(food.foodCount)
+    const { basket, dispatch } = useContext(BasketContext)
+    const [foodQuantity, setFoodQuantity] = useState(food.foodQuantity)
 
-    const handleFoodCount = (operator) => {
+    const handleFoodQuantity = (operator) => {
         switch (operator) {
             case '-':
-                setFoodCount(foodCount - 1)
+                setFoodQuantity(foodQuantity - 1)
                 return
             case '+':
-                setFoodCount(foodCount + 1)
+                setFoodQuantity(foodQuantity + 1)
         }
     }
 
@@ -20,9 +20,15 @@ const BasketFood = ({ food }) => {
     }
 
     useEffect(() => {
-        dispatch({ type: 'SET_FOOD_COUNT', payload: { id: food._id, foodCount } })
+        const index = basket.findIndex(f => f._id === food._id)
+        setFoodQuantity(basket[index].foodQuantity)
+        
+    }, [basket])
 
-    }, [foodCount])
+    useEffect(() => {
+        dispatch({ type: 'SET_FOOD_QUANTITY', payload: { id: food._id, foodQuantity } })
+
+    }, [foodQuantity])
 
     return (
         <div className="p-2 w-full">
@@ -33,13 +39,13 @@ const BasketFood = ({ food }) => {
                 </div>
                 <div className="flex-row">
                     <div className="flex h-fit">
-                        <button onClick={() => handleFoodCount('-')} disabled={foodCount === 1} className="px-2 border text-sm">-</button>
-                        <p className="px-2 border text-sm">{foodCount}</p>
-                        <button onClick={() => handleFoodCount('+')} className="px-2 border text-sm">+</button>
+                        <button onClick={() => handleFoodQuantity('-')} disabled={foodQuantity === 1} className="px-2 border text-sm">-</button>
+                        <p className="px-2 border text-sm">{foodQuantity}</p>
+                        <button onClick={() => handleFoodQuantity('+')} className="px-2 border text-sm">+</button>
                     </div>
                     <p className="mt-3 text-center">
-                        <span className="text-lg text-orange-500">₱</span>
-                        {food.price * food.foodCount}
+                        <span className="text-lg text-orange-500">₱ </span>
+                        {(food.price * food.foodQuantity).toLocaleString()}
                     </p>
                     <div className="mt-2 flex justify-start">
                         <button onClick={removeFood} className="py-1 text-xs w-full px-2 text-white bg-orange-500  hover:bg-orange-600">Remove</button>
