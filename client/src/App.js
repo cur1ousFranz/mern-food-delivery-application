@@ -10,6 +10,7 @@ import Signup from './views/auth/Signup';
 import Home from './views/pages/Home';
 import Stores from './views/pages/Stores';
 import ShowStore from './views/pages/ShowStore';
+import Checkout from './views/pages/Checkout';
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -26,6 +27,7 @@ function App() {
             <Route index element={ <Stores />} />
             <Route path=':id' element={ <ShowStore />} />
           </Route>
+          <Route path='/checkout' element={ <Checkout /> }/>
         </Routes>
         
       </BrowserRouter>
