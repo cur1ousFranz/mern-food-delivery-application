@@ -3,12 +3,18 @@ import { BasketContext } from "../../context/BasketContext";
 
 const ShowFood = ({ selectFood, selectedFood }) => {
 
-    const { basket, dispatch } = useContext(BasketContext)
-    const [foodCount, setFoodCount] = useState(1)
+    const { dispatch } = useContext(BasketContext)
+    const [foodQuantity, setFoodQuantity] = useState(1)
+
+    const [addToBasketLoading, setAddToBasketLoading] = useState(false)
 
     const addToBasket = () => {
-        const food = {...selectedFood, foodCount}
+        const food = {...selectedFood, foodQuantity}
+        setAddToBasketLoading(true)
         dispatch({type: 'ADD_TO_BASKET', payload: food})
+        setTimeout(() => {
+            setAddToBasketLoading(false)
+        }, 1000)
     }
 
     return (
@@ -30,16 +36,16 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                         </div>
                     </div>
                     <div>
-                        <p className="font-bold">Description</p>
+                        <p className="text-gray-800">Description</p>
                         <p className="">{selectedFood.description}</p>
                     </div>
-                    <p className="font-semibold text-2xl text-orange-500"><span className="text-lg md:text-4xl">₱ </span>{selectedFood.price}</p>
+                    <p className="font-semibold text-2xl text-orange-500"><span className="text-lg md:text-4xl">₱ </span>{selectedFood.price.toLocaleString()}</p>
                     <div className="flex">
-                        <button disabled={foodCount === 1} onClick={() => setFoodCount(foodCount - 1)} className={foodCount === 1 ? "py-2 px-4 border cursor-not-allowed border-e-0 border-gray-400" : "py-2 px-4 border border-e-0 border-gray-400"}>-</button>
-                        <p className="py-2 px-4 border border-gray-400">{foodCount}</p>
-                        <button onClick={() => setFoodCount(foodCount + 1)} className="py-2 px-4 border border-s-0 border-gray-400">+</button>
+                        <button disabled={foodQuantity === 1} onClick={() => setFoodQuantity(foodQuantity - 1)} className={foodQuantity === 1 ? "py-2 px-4 border cursor-not-allowed border-e-0 border-gray-400" : "py-2 px-4 border border-e-0 border-gray-400"}>-</button>
+                        <p className="py-2 px-4 border border-gray-400">{foodQuantity}</p>
+                        <button onClick={() => setFoodQuantity(foodQuantity + 1)} className="py-2 px-4 border border-s-0 border-gray-400">+</button>
                     </div>
-                    <button onClick={addToBasket} className="uppercase w-full rounded-md py-2 px-4 bg-orange-500 hover:bg-orange-600 text-white">Add To Basket</button>
+                    <button onClick={addToBasket} className={addToBasketLoading ? "uppercase w-full rounded-md py-2 px-4 bg-green-400 text-white" : "uppercase w-full rounded-md py-2 px-4 bg-orange-500 hover:bg-orange-600 text-white" }>{addToBasketLoading ? 'ADDED!' : 'ADD TO BASKET'}</button>
                 </div>
             </div>
         </div>
