@@ -6,7 +6,8 @@ const {
     storeFood,
     getFoodDetails,
     updateFood,
-    deleteFood
+    deleteFood,
+    getStoreFoods
 } = require('../controllers/foodController')
 
 router.get('/api/foods', getAllFoods)
@@ -14,5 +15,7 @@ router.post('/api/foods', storeFood)
 router.get('/api/foods/:id', getFoodDetails)
 router.put('/api/foods/:id', updateFood)
 router.delete('/api/foods/:id', deleteFood)
+
+router.get('/api/foods/store/:id', getStoreFoods)
 
 module.exports = router

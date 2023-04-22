@@ -1,5 +1,8 @@
 const { isValidObjectId } = require('mongoose')
 const Food = require('../models/foodModel')
+const Store = require('../models/storeModel')
+const extractUserId = require('../auth/extractUserId')
+
 
 const getAllFoods = async (req, res) => {
     const foods = await Food.find()
@@ -8,12 +11,12 @@ const getAllFoods = async (req, res) => {
 }
 
 const storeFood = async (req, res) => {
-    const { store_id, name, description, category, price} = req.body
+    const { name, description, category, price} = req.body
+    const user_id = extractUserId(req)
+    const store = await Store.findOne({ user_id }).select('_id')
+
     const errorFields = { error : "Pleae fill in all fields"}
-    
-    if(!store_id) {
-        return res.status(400).json(errorFields)
-    }
+
     if(!name) {
         return res.status(400).json(errorFields)
     }
@@ -27,7 +30,7 @@ const storeFood = async (req, res) => {
         return res.status(400).json(errorFields)
     }
 
-    const food = await Food.create({ store_id, name, description, category, price})
+    const food = await Food.create({ store_id: store._id, name, description, category, price})
     res.status(200).json(food)
 }
 
@@ -81,11 +84,28 @@ const deleteFood = async (req, res) => {
     res.status(200).json({message : 'Delete food'})
 }
 
+const getStoreFoods = async (req, res) => {
+    const { id } = req.params
+
+    if(!isValidObjectId(id)) {
+        return res.status(404).json({ error : "No such store"})
+    }
+
+    const foods = await Food.find({ store_id: id })
+
+    if(!foods) {
+        return res.status(400).json({ error : "No such store"})
+    }
+
+    res.status(200).json(foods)
+}
+
 
 module.exports = { 
     getAllFoods, 
     storeFood, 
     getFoodDetails,
     updateFood,
-    deleteFood
+    deleteFood,
+    getStoreFoods
 }
