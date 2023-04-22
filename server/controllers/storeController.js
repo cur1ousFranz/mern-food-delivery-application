@@ -18,7 +18,7 @@ const storeStore = async (req, res) => {
 
     try {
         const user = await User.signup(email, password, role)
-        await Store.create({
+        const store = await Store.create({
             user_id: user._id,
             store_address,
             floor_suit,
@@ -32,7 +32,7 @@ const storeStore = async (req, res) => {
         })
 
         const token = createToken(user._id)
-        res.status(200).json({ email, token })
+        res.status(200).json({ email, token, is_role: user.role, id: store._id })
 
     } catch (error) {
         res.status(500).json({ error: error.message })
