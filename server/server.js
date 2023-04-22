@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose= require('mongoose')
+const cors = require('cors')
 const app = express()
 
 // routes
@@ -19,6 +20,8 @@ app.use((req, res, next) => {
     next()
 })
 
+app.use(cors({ origin: 'http://localhost:3000' }))
+
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         app.listen(process.env.PORT, () => {
@@ -31,8 +34,8 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(foodRoutes)
 app.use(userRoutes)
-app.use(storeRoutes)
 app.use(businessTypeRoutes)
+app.use(storeRoutes)
 
 app.use(customerRoutes)
 app.use(orderRoutes)
