@@ -26,7 +26,32 @@ const foodSchema = new Schema({
     price: {
         type: Number,
         required: true,
+    },
+    has_instructions: {
+        type: Boolean,
+        require: true
+    },
+    has_choices: {
+        type: Boolean,
+        required: true,
+    },
+    food_choices: {
+        type: [{
+            title: { type: String, required: true },
+            type: { type: String, required: true },
+            options: {
+                type: [{
+                    option_name: { type: String, required: true },
+                    option_price: { type: Number, required: true }
+                }]
+            }
+        }],
+    },
+    image: {
+        type: String,
+        default: null
     }
+
 }, { timestamps: true })
 
 module.exports = mongoose.model('Food', foodSchema)
