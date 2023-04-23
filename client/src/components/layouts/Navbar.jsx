@@ -32,7 +32,7 @@ const Navbar = () => {
 
                 {user && (
                     <div className="relative">
-                        <img onClick={() => setprofileDropdown(!profileDropdown)} src="person-circle.svg" className="inline-block w-6 cursor-pointer" alt="" />
+                        <img onClick={() => setprofileDropdown(!profileDropdown)} src="/person-circle.svg" className="inline-block w-6 cursor-pointer" alt="" />
 
                         {profileDropdown && (
                             <div className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
