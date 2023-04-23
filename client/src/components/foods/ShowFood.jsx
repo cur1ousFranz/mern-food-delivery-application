@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
 
 const ShowFood = ({ selectFood, selectedFood }) => {
+    // TODO:: Display checkbox, radio, instructions
 
     const { dispatch } = useContext(BasketContext)
     const [foodQuantity, setFoodQuantity] = useState(1)
@@ -23,7 +24,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                 <div >
                     <div className="flex space-x-2">
                         <span className="cursor-pointer" onClick={() => selectFood(false)} ><img src="/arrow-left.svg" className="w-5 mt-0.5" alt=""/></span>
-                        <p className="">{selectedFood.name}</p>
+                        <p className="">Back to menu</p>
                     </div>
                     <img src="/gray-image.png" className="w-full mt-2 rounded-md h-full object-cover" alt="" />
                 </div>
