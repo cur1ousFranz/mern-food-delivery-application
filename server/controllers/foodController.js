@@ -11,26 +11,42 @@ const getAllFoods = async (req, res) => {
 }
 
 const storeFood = async (req, res) => {
-    const { name, description, category, price} = req.body
+    const { name, description, category, price, has_instructions, has_choices, food_choices} = req.body
     const user_id = extractUserId(req)
     const store = await Store.findOne({ user_id }).select('_id')
 
-    const errorFields = { error : "Pleae fill in all fields"}
-
+    const errorFields = []
+    let errorMessage = 'Please fill in all fields.'
     if(!name) {
-        return res.status(400).json(errorFields)
+        errorFields.push('name')
     }
     if(!description) {
-        return res.status(400).json(errorFields)
+        errorFields.push('description')
     }
     if(!category) {
-        return res.status(400).json(errorFields)
+        errorFields.push('category')
+    }
+    if(isNaN(price)) {
+        errorFields.push('price')
+        errorMessage = 'Invalid Input.'
     }
     if(!price) {
-        return res.status(400).json(errorFields)
+        errorFields.push('price')
+        errorMessage = 'Please fill in all fields.'
+    }
+    if(errorFields.length > 0) {
+        return res.status(400).json({ error: errorMessage, errorFields })
     }
 
-    const food = await Food.create({ store_id: store._id, name, description, category, price})
+    const food = await Food.create({ 
+        store_id: store._id, 
+        name, description, 
+        category, price,
+        has_instructions, 
+        has_choices, 
+        food_choices
+    })
+    
     res.status(200).json(food)
 }
 
@@ -91,7 +107,7 @@ const getStoreFoods = async (req, res) => {
         return res.status(404).json({ error : "No such store"})
     }
 
-    const foods = await Food.find({ store_id: id })
+    const foods = await Food.find({ store_id: id }).sort({ createdAt: -1 })
 
     if(!foods) {
         return res.status(400).json({ error : "No such store"})
