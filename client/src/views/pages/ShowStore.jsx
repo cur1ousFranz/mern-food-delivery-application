@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FoodContext } from "../../context/FoodContext";
@@ -6,6 +5,7 @@ import FoodDetails from "../../components/foods/FoodDetails";
 import FoodCategories from "../../components/foods/FoodCategories";
 import NotFound from "../../components/NotFound";
 import ShowFood from "../../components/foods/ShowFood";
+import axiosClient from "../../axios";
 
 const ShowStore = () => {
     const { id } = useParams()
@@ -24,7 +24,7 @@ const ShowStore = () => {
 
         const getStoreDetails = async () => {
             try {
-                const response = await axios.get(`/api/stores/${id}`)
+                const response = await axiosClient.get(`/stores/${id}`)
                 const data = response.data
 
                 if (response.status === 200) {
@@ -41,7 +41,7 @@ const ShowStore = () => {
 
         const getAllFoods = async () => {
             setFoodsLoading(true)
-            const response = await axios.get('/api/foods')
+            const response = await axiosClient.get(`/foods/store/${id}`)
             setFoodsLoading(false)
             const foodsData = response.data
 
@@ -105,7 +105,7 @@ const ShowStore = () => {
                         <div className="flex-row md:flex md:space-x-3">
                             <div className="flex space-x-1">
                                 <img src="/star-fill.svg" className="w-4" alt="" />
-                                <p className="inline-block">4.7 (43 ratings)</p>
+                                <p>4.7 (43 ratings)</p>
                             </div>
 
                             <div className="flex space-x-1">
@@ -119,7 +119,7 @@ const ShowStore = () => {
                             <div className="flex-row md:flex md:space-x-3">
                                 <div className="flex space-x-1">
                                     <img src="/star-fill.svg" className="w-4" alt="" />
-                                    <p className="inline-block">4.7 (43 ratings)</p>
+                                    <p>4.7 (43 ratings)</p>
                                 </div>
 
                                 <div className="flex space-x-1">
@@ -155,18 +155,16 @@ const ShowStore = () => {
                         {!error && !foodsLoading && foodList && (
                             <div className="grid grid-cols-2 gap-4 py-8 md:grid-cols-4">
                                 {foodList.map((food) => {
-                                    if (food.store_id === id) {
-                                        if (currentFoodCategory === 'All') {
-                                            return (
-                                                <FoodDetails food={food} key={food._id} selectFood={selectFood} />
-                                            )
-                                        }
+                                    if (currentFoodCategory === 'All') {
+                                        return (
+                                            <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                        )
+                                    }
 
-                                        if (currentFoodCategory === food.category) {
-                                            return (
-                                                <FoodDetails food={food} key={food._id} selectFood={selectFood} />
-                                            )
-                                        }
+                                    if (currentFoodCategory === food.category) {
+                                        return (
+                                            <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                        )
                                     }
                                 })}
                             </div>

@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import StoreDetails from "../../components/store/StoreDetails";
 import { StoreContext } from "../../context/StoreContext";
+import axiosClient from "../../axios";
 
 const Stores = () => {
     const { stores, dispatch } = useContext(StoreContext)
@@ -11,7 +11,7 @@ const Stores = () => {
 
         const getAllStores = async () => {
 
-            const response = await axios.get('/api/stores')
+            const response = await axiosClient.get('/stores')
             const data = response.data
 
             if (response.status === 200) {
@@ -21,7 +21,7 @@ const Stores = () => {
         }
 
         const getAllBusinessTypes = async () => {
-            const response = await axios.get('/api/business-type')
+            const response = await axiosClient.get('/business-type')
             const data = response.data
 
             if (response.status === 200) {

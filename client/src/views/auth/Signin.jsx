@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios'
 import { AuthContext } from "../../context/AuthContext";
+import axiosClient from "../../axios";
 
 const Signin = () => {
     const [email, setEmail] = useState('')
@@ -14,7 +14,7 @@ const Signin = () => {
         setError(null)
         
         try {
-            const response = await axios.post('/api/users/login', {email, password})
+            const response = await axiosClient.post('/users/login', {email, password})
             const user = response.data
 
             if(response.status === 200){
