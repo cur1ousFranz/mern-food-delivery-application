@@ -1,7 +1,7 @@
 const FoodDetails = ({ food, selectFood }) => {
     return (
         <div className="border rounded-md">
-            <img src="/gray-image.png" className="rounded-t-md h-100 object-cover" alt={food.name} />
+            <img src="/food_image.png" className="rounded-t-md h-100 object-cover" alt={food.name} />
             <div className="px-4 py-2">
                 <p className="text-sm md:text-base font-semibold truncate">{food.name}</p>
                 <p className="text-orange-500"><span className="text-lg">₱</span> {food.price.toLocaleString()}</p>
