@@ -5,30 +5,17 @@ const basketReducer = (state, action) => {
                 basket: action.payload
             }
         case 'ADD_TO_BASKET':
-            const index = state.basket.findIndex(food => food._id === action.payload._id)
-
-            if(index === -1){
-                return {
-                    basket: [...state.basket, action.payload]
-                }
-            }
-
             return {
-                basket: state.basket.map(food => {
-                    if(food._id === action.payload._id){
-                        return {...food, foodQuantity: food.foodQuantity + action.payload.foodQuantity}
-                    }
-
-                    return food
-                })
+                basket: [...state.basket, action.payload]
             }
-
         case 'REMOVE_TO_BASKET':
-            return { basket: state.basket.filter((food) => food._id !== action.payload.id) }
+            return { 
+                basket: state.basket.filter((food) => food.uuid !== action.payload.uuid) 
+            }
         case 'SET_FOOD_QUANTITY':
             return {
                 basket: state.basket.filter(food => {
-                    if (food._id === action.payload.id) {
+                    if (food.uuid === action.payload.uuid) {
                         food.foodQuantity = action.payload.foodQuantity
                     }
 
