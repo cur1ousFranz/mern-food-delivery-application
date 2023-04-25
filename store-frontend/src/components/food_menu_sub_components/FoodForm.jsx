@@ -25,7 +25,6 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
     const [hasChoices, setHasChoices] = useState(false)
     const [choices, setChoices] = useState([])
 
-    // TODO:: SUBMIT FORM
     const submitForm = async (e) => {
         e.preventDefault()
         setEmptyChoicesIndex([])
@@ -74,7 +73,14 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
 
     const addChoice = () => {
         if (choiceTitle) {
-            const newObject = { title: toUpperCaseWords(choiceTitle), type: selectedChoice, options: [] }
+            const newObject = { 
+                title: toUpperCaseWords(choiceTitle), 
+                type: selectedChoice, 
+                required: true,
+                select_count: 1,
+                options: [] 
+            }
+            
             setChoices([...choices, newObject])
             setChoiceTitle('')
             setShowChoiceInput(false)

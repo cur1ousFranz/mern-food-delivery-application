@@ -37,6 +37,19 @@ const ChoiceDetails = ({
         setOptionInput(true)
     }
 
+    const toggleChoiceRequired = (choiceIndex, value) => {
+        const data = [...choices]
+        data[choiceIndex] = { ...data[choiceIndex], required: value }
+
+        setChoices(data)
+    }
+
+    const toggleChoiceSelectCount = (choiceIndex, value) => {
+        const data = [...choices]
+        data[choiceIndex] = { ...data[choiceIndex], select_count: parseInt(value) }
+        setChoices(data)
+    }
+
     const formatOptionPrice = (price) => {
         if (price === '0') {
             return price
@@ -47,7 +60,10 @@ const ChoiceDetails = ({
 
     return (
         <div className='my-3'>
-            <div className={emptyChoicesIndex.includes(choiceIndex) ? 'p-4 rounded-md border border-red-500 bg-gray-100' : 'p-4 rounded-md bg-gray-100'}>
+            <div
+                className={emptyChoicesIndex.includes(choiceIndex)
+                    ? 'p-4 rounded-md border border-red-500 bg-gray-100'
+                    : 'p-4 rounded-md bg-gray-100'}>
                 <button
                     onClick={() => removeChoice(choiceIndex)}
                     type="button"
@@ -55,10 +71,45 @@ const ChoiceDetails = ({
                     Remove
                 </button>
                 {emptyChoicesIndex.includes(choiceIndex) && (
-                    <p className="text-xs absolute text-red-500">Choices must have atleast 2 options.</p>
+                    <p className="text-xs absolute text-red-500">
+                        Choices must have atleast 2 options.
+                    </p>
                 )}
 
-                <h1 className='font-semibold mt-4'>{choice.title}</h1>
+                <div className="mt-4 flex space-x-6">
+                    <h1 className='font-semibold'>{choice.title}</h1>
+                    <div
+                        className="flex space-x-2">
+                        <p>|</p>
+                        <input
+                            onChange={(e) => toggleChoiceRequired(choiceIndex, e.target.checked)}
+                            type="checkbox"
+                            checked={choice.required}
+                            className="w-4 accent-gray-800" />
+                        <p className=" text-gray-700">This choice is required</p>
+                    </div>
+
+                    <div>
+                        {choice.type === 'checkbox' && (
+                            <div className="flex space-x-2">
+                                <select
+                                    onChange={(e) => toggleChoiceSelectCount(choiceIndex, e.target.value)}
+                                    className="w-10 border border-gray-700 accent-gray-800">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                                <p className="text-gray-700">Options to be selected</p>
+                            </div>
+                        )}
+                    </div>
+
+                </div>
+
+
 
                 <div className='mt-3'>
                     {choice.options.map((option, optionIndex) => (

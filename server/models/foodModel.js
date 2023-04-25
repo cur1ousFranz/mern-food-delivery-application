@@ -39,6 +39,8 @@ const foodSchema = new Schema({
         type: [{
             title: { type: String, required: true },
             type: { type: String, required: true },
+            required: { type: Boolean, required: true},
+            select_count: { type: Number, required: true },
             options: {
                 type: [{
                     option_name: { type: String, required: true },
