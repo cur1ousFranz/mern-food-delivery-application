@@ -1,5 +1,9 @@
 import { useContext, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
+import { v4 as uuidv4 } from 'uuid'
+import ChoiceOptionDetails from "./ChoiceOptionDetails";
+
+// Add instruction to basket | validate choices with select count
 
 const ShowFood = ({ selectFood, selectedFood }) => {
     const { dispatch } = useContext(BasketContext)
@@ -29,36 +33,43 @@ const ShowFood = ({ selectFood, selectedFood }) => {
         const updatedCheckboxChoices = [...selectedCheckboxChoices]
         const existingCheckboxChoice = updatedCheckboxChoices.find(
             (choice) => choice.choiceIndex === choiceIndex
-            )
-        
-        if(event.target.checked) {
-            existingCheckboxChoice 
-                ? existingCheckboxChoice.selectedOption.push(optionName) 
-                : updatedCheckboxChoices.push({ choiceIndex, choiceTitle, selectedOption: [optionName]})
+        )
+
+        if (event.target.checked) {
+            existingCheckboxChoice
+                ? existingCheckboxChoice.selectedOption.push(optionName)
+                : updatedCheckboxChoices.push({ choiceIndex, choiceTitle, selectedOption: [optionName] })
 
         } else {
             existingCheckboxChoice.selectedOption = [...existingCheckboxChoice.selectedOption.filter(
-                (option) => option !==  optionName
+                (option) => option !== optionName
             )]
-            
+
         }
 
         setSelectedCheckboxChoices(updatedCheckboxChoices)
     }
 
     const addToBasket = () => {
-        // TODO:: Check selected options of choices (radio, checkbox), instructions
 
-        if (selectedFood.has_choices) {
-            const choices = selectedFood.food_choices
-            let count = choices.length
-
-            console.log(count)
+        const arr = []
+        if (selectedRadioChoices.length) {
+            arr.push(selectedRadioChoices)
+        }
+        if (selectedCheckboxChoices.length) {
+            arr.push(selectedCheckboxChoices)
         }
 
-        const food = { ...selectedFood, foodQuantity }
+        const food = {
+            uuid: uuidv4(),
+            ...selectedFood,
+            foodQuantity,
+            choice_options: arr ? arr : []
+        }
+
         setAddToBasketLoading(true)
         dispatch({ type: 'ADD_TO_BASKET', payload: food })
+
         setTimeout(() => {
             setAddToBasketLoading(false)
         }, 1000)
@@ -69,7 +80,9 @@ const ShowFood = ({ selectFood, selectedFood }) => {
             <div className="px-4 md:px-10 flex flex-col space-y-12 md:flex-row md:space-x-12 md:space-y-6" >
                 <div className="md:w-1/2" style={{ height: '22rem' }}>
                     <div className="flex space-x-2">
-                        <span className="cursor-pointer" onClick={() => selectFood(false)} ><img src="/arrow-left.svg" className="w-5 mt-0.5" alt="" /></span>
+                        <span className="cursor-pointer" onClick={() => selectFood(false)} >
+                            <img src="/arrow-left.svg" className="w-5 mt-0.5" alt="" />
+                        </span>
                         <p className="">Back to menu</p>
                     </div>
                     <img src="/food_image.png" className="w-full mt-2 rounded-md h-full object-cover" alt="" />
@@ -94,36 +107,23 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                                 <div key={index} className='py-4 cursor-pointer'>
                                     <div className="p-4 rounded-sm bg-slate-100">
                                         <h1 className='text-lg text-gray-700'>{choice.title}</h1>
+                                        {choice.required && (
+                                            <p className="text-sm text-red-500">*Required</p>
+                                        )}
                                     </div>
 
                                     <div className='p-4'>
-                                        {choice.options.map((option, optionIndex) => {
-                                            return (
-                                                <div className="my-3" key={optionIndex}>
-                                                    <div
-                                                        className="flex justify-between space-x-2">
-                                                        <p className="">{option.option_name}</p>
-                                                        <input
-                                                            onChange={(event) => {
-                                                                if(choice.type === 'radio') {
-                                                                    handleRadioOption(index, choice.title, option.option_name)
-                                                                }
-
-                                                                if(choice.type === 'checkbox') {
-                                                                    handleCheckboxOption(index, choice.title, option.option_name, event)
-                                                                }
-                                                            }}
-                                                            value={option.option_name}
-                                                            type={choice.type}
-                                                            name={choice.title} className="w-4 accent-gray-800" />
-                                                    </div>
-                                                    <p className="text-xs font-semibold text-gray-600">
-                                                        + ₱ {option.option_price.toLocaleString()}
-                                                    </p>
-                                                    <hr className="mt-3" />
-                                                </div>
-                                            )
-                                        })}
+                                        {choice.options.map((option, optionIndex) => (
+                                            <ChoiceOptionDetails
+                                                key={optionIndex}
+                                                choice={choice}
+                                                option={option}
+                                                handleRadioOption={handleRadioOption}
+                                                handleCheckboxOption={handleCheckboxOption}
+                                                index={index}
+                                            />
+                                        )
+                                        )}
                                     </div>
 
                                 </div>
@@ -132,7 +132,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                         })}
 
                         {selectedFood.has_instructions && (
-                            <div className="space-y-3">
+                            <div className="space-y-3 mt-3">
                                 <div className='py-4 px-6 cursor-pointer shadow-sm rounded-md bg-slate-100'>
                                     <h1 className="text-lg text-gray-700">Special Instructions</h1>
                                 </div>
