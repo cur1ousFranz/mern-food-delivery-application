@@ -19,14 +19,14 @@ const Basket = () => {
             </div>
 
             {basketDropdown && (
-                <div className="absolute right-0 p-2 mt-2 w-96 z-10 rounded-md border bg-white" style={{ minHeight: "300px" }}>
+                <div className="absolute right-0 p-2 mt-2 w-96 z-10 rounded-md border bg-white" style={{ minHeight: "500px" }}>
                     <div className="flex space-x-2">
                         <span><img src="/basket.svg" className="w-4 inline-block" alt="" /></span>
                         <h1 className="font-semibold mt-0.5">Basket</h1>
                     </div>
-                    <div className="overflow-y-auto px-2 max-h-60 ">
-                        {basket && basket.map(food => (
-                            <BasketFood food={food} key={food._id} />
+                    <div className="overflow-y-auto px-2 max-h-96">
+                        {basket && basket.map((food, index) => (
+                            <BasketFood food={food} key={index} />
                         ))}
 
                         {basket.length === 0 && (
