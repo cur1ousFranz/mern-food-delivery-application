@@ -5,16 +5,6 @@ const BasketFood = ({ food }) => {
     const { basket, dispatch } = useContext(BasketContext)
     const [foodQuantity, setFoodQuantity] = useState(food.foodQuantity)
 
-    const handleFoodQuantity = (operator) => {
-        switch (operator) {
-            case '-':
-                setFoodQuantity(foodQuantity - 1)
-                return
-            case '+':
-                setFoodQuantity(foodQuantity + 1)
-        }
-    }
-
     const removeFood = () => {
         dispatch({ type: 'REMOVE_TO_BASKET', payload: { uuid: food.uuid } })
     }
@@ -41,26 +31,51 @@ const BasketFood = ({ food }) => {
                         alt=""
                         style={{ minHeight: "7rem", maxHeight: "7rem" }} />
                 </div>
-                <div className="flex-row">
-                    <div className="flex h-fit">
+                <div className="flex-row w-1/2">
+                    <div className="mt-2 flex justify-end">
                         <button
-                            onClick={() => handleFoodQuantity('-')}
-                            disabled={foodQuantity === 1}
-                            className="px-2 border text-sm">-</button>
-                        <p className="px-2 border text-sm">{foodQuantity}</p>
-                        <button
-                            onClick={() => handleFoodQuantity('+')}
-                            className="px-2 border text-sm">+</button>
+                            onClick={removeFood}
+                            className="py-1 text-xs  px-2 rounded-full w-fit shadow-sm bg-orange-400 hover:bg-orange-300">
+                            <img src="/trash.svg" alt="" />
+                        </button>
                     </div>
-                    <p className="mt-3 text-center">
-                        <span className="text-lg text-orange-500">₱ </span>
+                    <div className="flex justify-start h-fit">
+                        <button
+                            onClick={() => setFoodQuantity(foodQuantity - 1)}
+                            disabled={foodQuantity === 1}
+                            className="px-2 border hover:border-gray-400 text-sm">-</button>
+                        <p className="px-2 border hover:border-gray-400 text-sm">{foodQuantity}</p>
+                        <button
+                            onClick={() => setFoodQuantity(foodQuantity + 1)}
+                            className="px-2 border hover:border-gray-400 text-sm">+</button>
+                    </div>
+                    <p className="mt-3 text-end font-semibold">
+                        <span className="text-lg font-semibold text-orange-500">Total: ₱ </span>
                         {(food.price * food.foodQuantity).toLocaleString()}
                     </p>
-                    <div className="mt-2 flex justify-start">
-                        <button onClick={removeFood} className="py-1 text-xs w-full px-2 text-white bg-orange-500  hover:bg-orange-600">Remove</button>
-                    </div>
                 </div>
             </div>
+            {food.has_choices && food.choice_options.map((choice, index) => (
+                <div key={index}>
+                    <p className="text-sm font-semibold text-gray-700">
+                        {choice.choiceTitle}: {choice.selectedOption.map((option, index) => (
+                            <span
+                                key={index}
+                                className="text-sm font-normal me-1 text-gray-700">
+                                {option},
+                            </span>
+                        ))}
+                    </p>
+
+
+                </div>
+            ))}
+            {food.has_instructions && food.instruction && (
+                <h1 className="mt-4 font-semibold p-2 shadow-sm rounded-sm text-sm text-gray-700 bg-slate-100">Note:
+                    <span className="font-normal"> {food.instruction}</span>
+                </h1>
+            )}
+
             <hr className="mt-4" />
         </div>
     );
