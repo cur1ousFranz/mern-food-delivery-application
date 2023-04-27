@@ -46,7 +46,7 @@ const Stores = () => {
                 return (
                     <div className="px-6 md:px-24 py-8" key={type._id}>
                         <h1 className="font-semibold text-lg md:text-2xl">{type.name}</h1>
-                        <div className="grid grid-cols-2 gap-4 py-8 md:grid-cols-4">
+                        <div className="grid grid-cols-2 gap-x-4 py-2 md:grid-cols-4">
 
                             {storesByType.length > 0 && storesByType.map((store) => (
                                 <StoreDetails store={store} key={store._id} />
