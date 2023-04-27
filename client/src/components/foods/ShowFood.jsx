@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
 import { v4 as uuidv4 } from 'uuid'
 import ChoiceOptionDetails from "./ChoiceOptionDetails";
@@ -9,25 +9,26 @@ const ShowFood = ({ selectFood, selectedFood }) => {
     const { dispatch } = useContext(BasketContext)
     const [foodQuantity, setFoodQuantity] = useState(1)
     const [addToBasketLoading, setAddToBasketLoading] = useState(false)
+    const [totalPrice, setTotalPrice] = useState(selectedFood.price)
 
     const [selectedRadioChoices, setSelectedRadioChoices] = useState([]);
     const [selectedCheckboxChoices, setSelectedCheckboxChoices] = useState([]);
     const [instruction, setInstruction] = useState('')
     const [choiceError, setChoiceError] = useState([])
 
-    const handleRadioOption = (choiceIndex, choiceTitle, optionName, select_count) => {
+    const handleRadioOption = (choiceIndex, choiceTitle, optionName, select_count, optionPrice) => {
         const updatedRadioChoices = [...selectedRadioChoices]
         const existingRadioChoice = updatedRadioChoices.find(
             (choice) => choice.choiceIndex === choiceIndex
         )
 
         if (existingRadioChoice) {
-            existingRadioChoice.selectedOption = [optionName];
+            existingRadioChoice.selectedOption = [{ optionName, optionPrice }];
         } else {
             updatedRadioChoices.push({
                 choiceIndex,
                 choiceTitle,
-                selectedOption: [optionName],
+                selectedOption: [{ optionName, optionPrice }],
                 select_count
             });
         }
@@ -35,32 +36,31 @@ const ShowFood = ({ selectFood, selectedFood }) => {
         setSelectedRadioChoices(updatedRadioChoices)
     }
 
-    const handleCheckboxOption = (choiceIndex, choiceTitle, optionName, event, select_count) => {
+    const handleCheckboxOption = (choiceIndex, choiceTitle, optionName, event, select_count, optionPrice) => {
         const updatedCheckboxChoices = [...selectedCheckboxChoices]
         const existingCheckboxChoice = updatedCheckboxChoices.find(
             (choice) => choice.choiceIndex === choiceIndex
         )
-      
+
         if (event.target.checked) {
             existingCheckboxChoice
-                ? existingCheckboxChoice.selectedOption.push(optionName)
+                ? existingCheckboxChoice.selectedOption.push({ optionName, optionPrice })
                 : updatedCheckboxChoices.push({
                     choiceIndex,
                     choiceTitle,
-                    selectedOption: [optionName],
+                    selectedOption: [{ optionName, optionPrice }],
                     select_count
                 })
-      
+
         } else {
             existingCheckboxChoice.selectedOption = [...existingCheckboxChoice.selectedOption.filter(
-                (option) => option !== optionName
+                (option) => option.optionName !== optionName
             )]
-      
+
         }
-      
+
         setSelectedCheckboxChoices(updatedCheckboxChoices)
-      }
-      
+    }
 
     const addToBasket = () => {
 
@@ -121,7 +121,8 @@ const ShowFood = ({ selectFood, selectedFood }) => {
             ...selectedFood,
             foodQuantity,
             instruction,
-            choice_options: arr ? arr : []
+            choice_options: arr ? arr : [],
+            totalPrice
         }
 
         setAddToBasketLoading(true)
@@ -132,30 +133,54 @@ const ShowFood = ({ selectFood, selectedFood }) => {
         }, 1000)
     }
 
+    useEffect(() => {
+        let optionPrices = 0
+        
+        if (selectedRadioChoices.length) {
+            selectedRadioChoices.map(choice => {
+                choice.selectedOption.map(option => {
+                    optionPrices += option.optionPrice
+                })
+            })
+        }
+
+        if (selectedCheckboxChoices.length) {
+            selectedCheckboxChoices.map(choice => {
+                choice.selectedOption.map(option => {
+                    optionPrices += option.optionPrice
+                })
+            })
+        }
+
+        const price = (selectedFood.price + optionPrices) * foodQuantity
+        setTotalPrice(price)
+         
+    }, [foodQuantity, selectedRadioChoices, selectedCheckboxChoices])
+
     return (
         <div className="my-6 pb-12">
             <div className="px-4 md:px-10 flex flex-col space-y-12 md:flex-row md:space-x-12 md:space-y-6" >
-                <div className="md:w-1/2" style={{ height: '22rem' }}>
+                <div className="md:w-1/2 space-y-2" style={{ height: '22rem' }}>
                     <div className="flex space-x-2">
                         <span
                             className="cursor-pointer"
                             onClick={() => selectFood(false)} >
-                            <img src="/arrow-left.svg" className="w-5 mt-0.5" alt="" />
+                            <img src="/img/arrow-left.svg" className="w-5 mt-0.5" alt="" />
                         </span>
                         <p className="">Back to menu</p>
                     </div>
                     <img
-                        src="/food_image.png"
-                        className="w-full mt-2 rounded-md h-full object-cover"
+                        src="/img/food_image.png"
+                        className="w-full shadow-sm mt-2 rounded-md h-full object-cover"
                         alt="" />
                 </div>
-                <div className="md:w-1/2 space-y-4 mt-6" style={{ height: '18rem' }}>
+                <div className="md:w-1/2 space-y-4" style={{ height: '18rem' }}>
                     <div className="flex justify-between">
-                        <h1 className="text-bold text-lg md:text-2xl text-orange-500">
+                        <h1 className="font-bold text-lg md:text-2xl text-orange-500">
                             {selectedFood.name}
                         </h1>
                         <div className="flex space-x-3 mt-2">
-                            <img src="/heart.svg" className="w-4" alt="" />
+                            <img src="/img/heart.svg" className="w-4" alt="" />
                             <p className="font-semibold text-sm md:text-base">4.8 (23 ratings)</p>
                         </div>
                     </div>
@@ -221,7 +246,8 @@ const ShowFood = ({ selectFood, selectedFood }) => {
 
                     <p className="font-semibold text-2xl text-orange-500">
                         <span className="text-lg md:text-4xl">₱ </span>
-                        {selectedFood.price.toLocaleString()}
+                        {/* {selectedFood.price.toLocaleString()} */}
+                        {totalPrice}
                     </p>
                     <div className="flex">
                         <button
@@ -243,8 +269,8 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                     <button
                         onClick={addToBasket}
                         className={addToBasketLoading
-                            ? "uppercase w-full rounded-md py-2 px-4 bg-green-400 text-white"
-                            : "uppercase w-full rounded-md py-2 px-4 bg-orange-500 hover:bg-orange-600 text-white"}>
+                            ? "uppercase w-full rounded-sm py-2 px-4 bg-green-400 text-white"
+                            : "uppercase w-full rounded-sm py-2 px-4 bg-orange-500 hover:bg-orange-600 text-white"}>
                         {addToBasketLoading
                             ? 'ADDED!'
                             : 'ADD TO BASKET'}
