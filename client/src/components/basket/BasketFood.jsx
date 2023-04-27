@@ -51,7 +51,7 @@ const BasketFood = ({ food }) => {
                     </div>
                     <p className="mt-3 text-end font-semibold">
                         <span className="text-lg font-semibold text-orange-500">Total: ₱ </span>
-                        {(food.price * food.foodQuantity).toLocaleString()}
+                        {(food.totalPrice * food.foodQuantity).toLocaleString()}
                     </p>
                 </div>
             </div>
@@ -62,7 +62,7 @@ const BasketFood = ({ food }) => {
                             <span
                                 key={index}
                                 className="text-sm font-normal me-1 text-gray-700">
-                                {option},
+                                {option.optionName},
                             </span>
                         ))}
                     </p>
