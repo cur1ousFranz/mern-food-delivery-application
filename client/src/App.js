@@ -11,6 +11,7 @@ import Home from './views/pages/Home';
 import Stores from './views/pages/Stores';
 import ShowStore from './views/pages/ShowStore';
 import Checkout from './views/pages/Checkout';
+import Footer from './components/layouts/Footer';
 
 function App() {
   const { user } = useContext(AuthContext)
@@ -29,7 +30,7 @@ function App() {
           </Route>
           <Route path='/checkout' element={ <Checkout /> }/>
         </Routes>
-        
+        <Footer/>
       </BrowserRouter>
     </div>
   );
