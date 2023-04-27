@@ -94,7 +94,7 @@ const ShowStore = () => {
             {!error && store && (
                 <h1 className="font-semibold text-xl md:text-4xl">{store.store_name}
                     <span className="inline-block ml-5">
-                        <img src="/star-fill.svg" alt="" className="w-4 md:w-5" />
+                        <img src="/img/star-fill.svg" alt="" className="w-4 md:w-5" />
                     </span>
                 </h1>
             )}
@@ -104,12 +104,12 @@ const ShowStore = () => {
                     <div className="md:hidden grid grid-cols-2">
                         <div className="flex-row md:flex md:space-x-3">
                             <div className="flex space-x-1">
-                                <img src="/star-fill.svg" className="w-4" alt="" />
+                                <img src="/img/star-fill.svg" className="w-4" alt="" />
                                 <p>4.7 (43 ratings)</p>
                             </div>
 
                             <div className="flex space-x-1">
-                                <img src="/clock-fill.svg" className="w-4" alt="" />
+                                <img src="/img/clock-fill.svg" className="w-4" alt="" />
                                 <p>Open 24 hours</p>
                             </div>
                         </div>
@@ -118,12 +118,12 @@ const ShowStore = () => {
                         <div className="hidden md:block w-full">
                             <div className="flex-row md:flex md:space-x-3">
                                 <div className="flex space-x-1">
-                                    <img src="/star-fill.svg" className="w-4" alt="" />
+                                    <img src="/img/star-fill.svg" className="w-4" alt="" />
                                     <p>4.7 (43 ratings)</p>
                                 </div>
 
                                 <div className="flex space-x-1">
-                                    <img src="/clock-fill.svg" className="w-4" alt="" />
+                                    <img src="/img/clock-fill.svg" className="w-4" alt="" />
                                     <p>Open 24 hours</p>
                                 </div>
                             </div>
@@ -131,8 +131,13 @@ const ShowStore = () => {
 
                         {!viewFood && (
                             <div className="w-full h-fit p-1 md:w-2/4 flex border-b border-gray-400 ">
-                                <input type="text" onChange={handleSearchChange} value={search} className="w-full px-2 rounded-md focus:outline-none" placeholder="Search Food" />
-                                <img src="/spoon-fork.svg" className="w-8 h-8" alt="" />
+                                <input
+                                    type="text"
+                                    onChange={handleSearchChange}
+                                    value={search}
+                                    className="w-full px-2 rounded-md focus:outline-none"
+                                    placeholder="Search Food" />
+                                <img src="/img/spoon-fork.svg" className="w-8 h-8" alt="" />
                             </div>
                         )}
                     </div>
@@ -146,24 +151,33 @@ const ShowStore = () => {
                         <h1 className="text-xl font-bold">Menu</h1>
                         <div className="mt-6">
                             {store && (
-                                <FoodCategories categories={store.food_categories} selectCategory={selectCategory} currentFoodCategory={currentFoodCategory} />
+                                <FoodCategories
+                                    categories={store.food_categories}
+                                    selectCategory={selectCategory}
+                                    currentFoodCategory={currentFoodCategory} />
                             )}
                         </div>
                     </div>
 
                     <div className="w-full">
                         {!error && !foodsLoading && foodList && (
-                            <div className="grid grid-cols-2 gap-4 py-8 md:grid-cols-4">
+                            <div className="grid grid-cols-2 gap-4 py-8 ">
                                 {foodList.map((food) => {
                                     if (currentFoodCategory === 'All') {
                                         return (
-                                            <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                            <FoodDetails
+                                                food={food}
+                                                key={food._id}
+                                                selectFood={selectFood} />
                                         )
                                     }
 
                                     if (currentFoodCategory === food.category) {
                                         return (
-                                            <FoodDetails food={food} key={food._id} selectFood={selectFood} />
+                                            <FoodDetails
+                                                food={food}
+                                                key={food._id}
+                                                selectFood={selectFood} />
                                         )
                                     }
                                 })}

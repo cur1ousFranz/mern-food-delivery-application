@@ -17,22 +17,25 @@ const Navbar = () => {
     return (
         <div className="py-6 px-6 border-b flex justify-between">
             <Link to={'/'} className="font-semibold text-xl">
-                <img src="/kaon.svg" className="w-20 md:w-24 absolute -mt-2" alt="" />
+                FOOD DELIVERY APPLICATION
             </Link>
             <div className="hidden md:flex space-x-8 mt-1 font-semibold">
                 <NavLink to={'/'} className="hover:underline hover:text-orange-500">Home</NavLink>
                 <NavLink to={'/stores'} className="hover:underline hover:text-orange-500">Stores</NavLink>
-                <h1 className="hover:underline hover:text-orange-500">About</h1>
                 <h1 className="hover:underline hover:text-orange-500">Services</h1>
                 <h1 className="hover:underline hover:text-orange-500">Delivery</h1>
             </div>
             <div className="space-x-6 flex">
-                
+
                 <Basket />
 
                 {user && (
                     <div className="relative">
-                        <img onClick={() => setprofileDropdown(!profileDropdown)} src="/person-circle.svg" className="inline-block w-6 cursor-pointer" alt="" />
+                        <img
+                            onClick={() => setprofileDropdown(!profileDropdown)}
+                            src="/img/person-circle.svg"
+                            className="inline-block w-6 cursor-pointer"
+                            alt="" />
 
                         {profileDropdown && (
                             <div className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
