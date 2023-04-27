@@ -7,7 +7,7 @@ const ChoiceOptionDetails = ({
     choiceIndex
 }) => {
     const currentChoice = selectedCheckboxChoices.filter(
-        (choice, index) => choice.choiceIndex === choiceIndex
+        (choice) => choice.choiceIndex === choiceIndex
     )[0]
 
     return (
@@ -22,7 +22,8 @@ const ChoiceOptionDetails = ({
                                 choiceIndex,
                                 choice.title,
                                 option.option_name,
-                                choice.select_count
+                                choice.select_count,
+                                option.option_price
                             )
                         }
 
@@ -32,13 +33,14 @@ const ChoiceOptionDetails = ({
                                 choice.title,
                                 option.option_name,
                                 event,
-                                choice.select_count
+                                choice.select_count,
+                                option.option_price
                             )
                         }
                     }}
                     disabled={
                         (currentChoice
-                            && !currentChoice.selectedOption.includes(option.option_name)
+                            && !currentChoice.selectedOption.some((opt) => opt.optionName === option.option_name)
                             && currentChoice.select_count === currentChoice.selectedOption.length)
                             ? true : false
                     }
