@@ -1,14 +1,32 @@
 const FoodDetails = ({ food, selectFood }) => {
     return (
-        <div className="border rounded-md">
-            <img src="/food_image.png" className="rounded-t-md h-100 object-cover" alt={food.name} />
-            <div className="px-4 py-2">
-                <p className="text-sm md:text-base font-semibold truncate">{food.name}</p>
-                <p className="text-orange-500"><span className="text-lg">₱</span> {food.price.toLocaleString()}</p>
+        <div
+            onClick={() => food.available ? selectFood(true, food) : ''}
+            className={food.available
+                ? "rounded-md cursor-pointer shadow-sm flex flex-col md:flex-row hover:shadow-xl"
+                : "rounded-md border-l-4 border-gray-500 cursor-pointer shadow-sm flex hover:shadow-xl"}>
+            <img
+                src="/img/food_image.png"
+                className=" rounded-t-md object-cover"
+                style={{ height: "150px" }}
+                alt={food.name} />
+            <div className="w-full flex justify-between">
+                <div className="px-4 py-2 w-full">
+                    <div className="flex justify-between">
+                        <p className="text-sm md:text-base font-semibold">{food.name}</p>
+                        <img src="/img/heart.svg" className="hidden md:block w-5" alt="" />
+                    </div>
+                    <div className="flex justify-between">
+                        <p className="text-orange-500">
+                            <span className="text-lg">
+                                ₱
+                            </span>
+                            {food.price.toLocaleString()}
+                        </p>
+                        <img src="/img/heart.svg" className="md:hidden w-5" alt="" />
+                    </div>
+                </div>
             </div>
-            <button onClick={() => selectFood(true, food)} className={food.available ? "text-sm w-full py-1 md:py-2 rounded-b-md bg-orange-500 hover:bg-orange-400 text-white" : "text-sm w-full py-2 rounded-b-md cursor-not-allowed bg-gray-400 text-white"} disabled={!food.available}>
-                { food.available ? 'Quick View' : 'Not available'}
-            </button>
         </div>
     );
 }
