@@ -4,12 +4,10 @@ import { v4 as uuidv4 } from 'uuid'
 import ChoiceOptionDetails from "./ChoiceOptionDetails";
 
 const ShowFood = ({ selectFood, selectedFood }) => {
-    // TODO:: Dynamic update for prices (show food, basket)
-
     const { dispatch } = useContext(BasketContext)
     const [foodQuantity, setFoodQuantity] = useState(1)
     const [addToBasketLoading, setAddToBasketLoading] = useState(false)
-    const [totalPrice, setTotalPrice] = useState(selectedFood.price)
+    const [choicesPrice, setChoicesPrice] = useState(0)
 
     const [selectedRadioChoices, setSelectedRadioChoices] = useState([]);
     const [selectedCheckboxChoices, setSelectedCheckboxChoices] = useState([]);
@@ -30,7 +28,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                 choiceTitle,
                 selectedOption: [{ optionName, optionPrice }],
                 select_count
-            });
+            })
         }
 
         setSelectedRadioChoices(updatedRadioChoices)
@@ -122,7 +120,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
             foodQuantity,
             instruction,
             choice_options: arr ? arr : [],
-            totalPrice
+            choicesPrice
         }
 
         setAddToBasketLoading(true)
@@ -134,12 +132,11 @@ const ShowFood = ({ selectFood, selectedFood }) => {
     }
 
     useEffect(() => {
-        let optionPrices = 0
-        
+        let price = 0
         if (selectedRadioChoices.length) {
             selectedRadioChoices.map(choice => {
                 choice.selectedOption.map(option => {
-                    optionPrices += option.optionPrice
+                    price += option.optionPrice
                 })
             })
         }
@@ -147,15 +144,14 @@ const ShowFood = ({ selectFood, selectedFood }) => {
         if (selectedCheckboxChoices.length) {
             selectedCheckboxChoices.map(choice => {
                 choice.selectedOption.map(option => {
-                    optionPrices += option.optionPrice
+                    price += option.optionPrice
                 })
             })
         }
 
-        const price = (selectedFood.price + optionPrices) * foodQuantity
-        setTotalPrice(price)
-         
-    }, [foodQuantity, selectedRadioChoices, selectedCheckboxChoices])
+        setChoicesPrice(price)
+
+    }, [selectedRadioChoices, selectedCheckboxChoices])
 
     return (
         <div className="my-6 pb-12">
@@ -246,8 +242,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
 
                     <p className="font-semibold text-2xl text-orange-500">
                         <span className="text-lg md:text-4xl">₱ </span>
-                        {/* {selectedFood.price.toLocaleString()} */}
-                        {totalPrice}
+                        {(selectedFood.price + choicesPrice) * foodQuantity}
                     </p>
                     <div className="flex">
                         <button
