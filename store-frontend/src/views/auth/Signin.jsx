@@ -15,7 +15,7 @@ const Signin = () => {
         try {
             const response = await axiosClient.post('/users/login', {email, password})
             const data = await response.data
-            console.log(response);
+
             if(response.status === 200) {
                 if(data.is_role === 'store'){
                     localStorage.setItem('store', JSON.stringify(data))
