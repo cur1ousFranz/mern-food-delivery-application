@@ -18,10 +18,15 @@ const storeSchema = new Schema({
         type: String,
         required: true
     },
+    brand_name: {
+        type: String,
+        required: true
+    },
     food_categories: {
         type: [{
             category_name: { type: String, required: true },
         }],
+        default: null
     },
     business_type: {
         type: String,
