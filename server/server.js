@@ -14,13 +14,19 @@ const transactionRoutes = require('./routes/transaction')
 const storeRoutes = require('./routes/store')
 const businessTypeRoutes = require('./routes/businessType')
 
+// Middleware to parse URL-encoded request bodies
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+
 app.use((req, res, next) => {
     console.log(req.method)
     next()
 })
 
 app.use(cors({ origin: '*' }))
+
+// Public folder
+app.use(express.static('./public'))
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
