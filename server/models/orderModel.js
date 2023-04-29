@@ -7,15 +7,44 @@ const orderSchema = new Schema({
         type: String,
         required: true
     },
-    foods: {
-        type: [{
-            food_id: { type: String, required: true },
-            store_id: { type: String, required: true },
-            quantity: { type: Number, required: true }
-        }],
+    food_id: {
+        type: String,
+        required: Boolean
+    },
+    store_id: {
+        type: String,
+        required: Boolean
+    },
+    food_quantity: {
+        type: Number,
         required: true
     },
-    total_amount: {
+    has_choices: {
+        type: Boolean,
+        required: true
+    },
+    choice_options: {
+        type: [{
+            choiceIndex: {type: Number, required: true},
+            choiceTitle: {type: String, required: true},
+            selectedOption: {
+                type : [{
+                    optionName : { type: String, required: true},
+                    optionPrice : { type: Number, required: true}
+                }],
+            },
+        }],
+        default: null
+    },
+    has_instructions: {
+        type: Boolean,
+        required: true
+    },
+    instruction: {
+        type: String,
+        default: null
+    },
+    total_price: {
         type: Number,
         required: true
     },
