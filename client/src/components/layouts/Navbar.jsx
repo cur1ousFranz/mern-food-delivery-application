@@ -20,10 +20,7 @@ const Navbar = () => {
                 FOOD DELIVERY APPLICATION
             </Link>
             <div className="hidden md:flex space-x-8 mt-1 font-semibold">
-                <NavLink to={'/'} className="hover:underline hover:text-orange-500">Home</NavLink>
-                <NavLink to={'/stores'} className="hover:underline hover:text-orange-500">Stores</NavLink>
-                <h1 className="hover:underline hover:text-orange-500">Services</h1>
-                <h1 className="hover:underline hover:text-orange-500">Delivery</h1>
+
             </div>
             <div className="space-x-6 flex">
 
