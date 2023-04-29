@@ -16,7 +16,13 @@ const BasketFood = ({ food }) => {
     }, [basket])
 
     useEffect(() => {
-        dispatch({ type: 'SET_FOOD_QUANTITY', payload: { uuid: food.uuid, foodQuantity } })
+        dispatch({
+            type: 'SET_FOOD_QUANTITY',
+            payload: {
+                uuid: food.uuid,
+                foodQuantity
+            }
+        })
 
     }, [foodQuantity])
 
@@ -26,7 +32,7 @@ const BasketFood = ({ food }) => {
             <div className="flex space-x-12 w-full">
                 <div className="w-1/2">
                     <img
-                        src="/food_image.png"
+                        src="/img/food_image.png"
                         className="rounded-md object-cover"
                         alt=""
                         style={{ minHeight: "7rem", maxHeight: "7rem" }} />
@@ -36,7 +42,7 @@ const BasketFood = ({ food }) => {
                         <button
                             onClick={removeFood}
                             className="py-1 text-xs  px-2 rounded-full w-fit shadow-sm bg-orange-400 hover:bg-orange-300">
-                            <img src="/trash.svg" alt="" />
+                            <img src="/img/trash.svg" alt="" />
                         </button>
                     </div>
                     <div className="flex justify-start h-fit">
@@ -51,7 +57,7 @@ const BasketFood = ({ food }) => {
                     </div>
                     <p className="mt-3 text-end font-semibold">
                         <span className="text-lg font-semibold text-orange-500">Total: ₱ </span>
-                        {(food.totalPrice * food.foodQuantity).toLocaleString()}
+                        {((food.price + food.choicesPrice) * food.foodQuantity).toLocaleString()}
                     </p>
                 </div>
             </div>

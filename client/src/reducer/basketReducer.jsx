@@ -9,8 +9,8 @@ const basketReducer = (state, action) => {
                 basket: [...state.basket, action.payload]
             }
         case 'REMOVE_TO_BASKET':
-            return { 
-                basket: state.basket.filter((food) => food.uuid !== action.payload.uuid) 
+            return {
+                basket: state.basket.filter((food) => food.uuid !== action.payload.uuid)
             }
         case 'SET_FOOD_QUANTITY':
             return {
