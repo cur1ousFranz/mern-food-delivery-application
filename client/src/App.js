@@ -8,7 +8,6 @@ import Navbar from "./components/layouts/Navbar";
 import Signin from './views/auth/Signin';
 import Signup from './views/auth/Signup';
 import Home from './views/pages/Home';
-import Stores from './views/pages/Stores';
 import ShowStore from './views/pages/ShowStore';
 import Checkout from './views/pages/Checkout';
 import Footer from './components/layouts/Footer';
@@ -25,7 +24,6 @@ function App() {
           <Route path='/signin' element={ !user ? <Signin /> : <Navigate to={'/'} /> }/>
           <Route path='/signup' element={ !user ? <Signup /> : <Navigate to={'/'} /> }/>
           <Route path='/stores' >
-            <Route index element={ <Stores />} />
             <Route path=':id' element={ <ShowStore />} />
           </Route>
           <Route path='/checkout' element={ <Checkout /> }/>
