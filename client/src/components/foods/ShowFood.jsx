@@ -166,7 +166,9 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                         <p className="">Back to menu</p>
                     </div>
                     <img
-                        src="/img/food_image.png"
+                        src={selectedFood.image
+                            ? `http://localhost:4000/${selectedFood.image}`
+                            : "/img/food_image.png"}
                         className="w-full shadow-sm mt-2 rounded-md h-full object-cover"
                         alt="" />
                 </div>
@@ -181,64 +183,67 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                         </div>
                     </div>
 
-                    <div className=" h-full overflow-auto">
-                        <div>
-                            <p className="text-gray-800">Description</p>
-                            <p className="">{selectedFood.description}</p>
-                        </div>
+                    <div>
+                        <p className="text-gray-800">Description</p>
+                        <p className="">{selectedFood.description}</p>
+                    </div>
 
-                        {selectedFood.has_choices && selectedFood.food_choices.map((choice, choiceIndex) => {
-                            return (
-                                <div key={choiceIndex} className='py-4 cursor-pointer'>
-                                    <div className={choiceError.includes(choiceIndex)
-                                        ? "p-4 rounded-sm border border-red-500 bg-slate-100"
-                                        : "p-4 rounded-sm bg-slate-100"}>
-                                        <div className="flex space-x-4">
-                                            <h1 className='text-lg text-gray-700'>{choice.title}</h1>
-                                            {choice.required && (
-                                                <p className="text-xs text-red-500">*Required</p>
+                    {(selectedFood.has_choices || selectedFood.has_instructions) && (
+                        <div className="h-full overflow-auto">
+
+                            {selectedFood.has_choices && selectedFood.food_choices.map((choice, choiceIndex) => {
+                                return (
+                                    <div key={choiceIndex} className='py-4 cursor-pointer'>
+                                        <div className={choiceError.includes(choiceIndex)
+                                            ? "p-4 rounded-sm border border-red-500 bg-slate-100"
+                                            : "p-4 rounded-sm bg-slate-100"}>
+                                            <div className="flex space-x-4">
+                                                <h1 className='text-lg text-gray-700'>{choice.title}</h1>
+                                                {choice.required && (
+                                                    <p className="text-xs text-red-500">*Required</p>
+                                                )}
+                                            </div>
+                                            <p className="text-sm text-gray-600">Choose up to {choice.select_count}.</p>
+                                        </div>
+
+                                        <div className='p-4'>
+                                            {choice.options.map((option, optionIndex) => (
+                                                <ChoiceOptionDetails
+                                                    key={optionIndex}
+                                                    choice={choice}
+                                                    option={option}
+                                                    handleRadioOption={handleRadioOption}
+                                                    handleCheckboxOption={handleCheckboxOption}
+                                                    selectedCheckboxChoices={selectedCheckboxChoices}
+                                                    choiceIndex={choiceIndex}
+                                                />
+                                            )
                                             )}
                                         </div>
-                                        <p className="text-sm text-gray-600">Choose up to {choice.select_count}.</p>
+
+                                    </div>
+                                )
+
+                            })}
+
+                            {selectedFood.has_instructions && (
+                                <div className="space-y-3 mt-3">
+                                    <div className='py-4 px-6 cursor-pointer shadow-sm rounded-md bg-slate-100'>
+                                        <h1 className="text-lg text-gray-700">Special Instructions</h1>
                                     </div>
 
-                                    <div className='p-4'>
-                                        {choice.options.map((option, optionIndex) => (
-                                            <ChoiceOptionDetails
-                                                key={optionIndex}
-                                                choice={choice}
-                                                option={option}
-                                                handleRadioOption={handleRadioOption}
-                                                handleCheckboxOption={handleCheckboxOption}
-                                                selectedCheckboxChoices={selectedCheckboxChoices}
-                                                choiceIndex={choiceIndex}
-                                            />
-                                        )
-                                        )}
+                                    <div className='px-1 cursor-pointer shadow-sm rounded-md bg-slate-100'>
+                                        <textarea
+                                            onChange={(e) => setInstruction(e.target.value)}
+                                            className="p-4 max-h-56 min-h-fit bg-slate-100"
+                                            style={{ width: "100%" }}
+                                            rows="5"
+                                            placeholder="Add note"></textarea>
                                     </div>
-
                                 </div>
-                            )
-
-                        })}
-
-                        {selectedFood.has_instructions && (
-                            <div className="space-y-3 mt-3">
-                                <div className='py-4 px-6 cursor-pointer shadow-sm rounded-md bg-slate-100'>
-                                    <h1 className="text-lg text-gray-700">Special Instructions</h1>
-                                </div>
-
-                                <div className='px-1 cursor-pointer shadow-sm rounded-md bg-slate-100'>
-                                    <textarea
-                                        onChange={(e) => setInstruction(e.target.value)}
-                                        className="p-4 max-h-56 min-h-fit bg-slate-100"
-                                        style={{ width: "100%" }}
-                                        rows="5"
-                                        placeholder="Add note"></textarea>
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
 
                     <p className="font-semibold text-2xl text-orange-500">
                         <span className="text-lg md:text-4xl">₱ </span>
