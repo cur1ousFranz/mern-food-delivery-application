@@ -3,7 +3,7 @@ import ChoiceOptionDetails from "./ChoiceOptionDetails";
 import numbersOnly from "../../../numberkeys";
 
 const ChoiceDetails = ({
-    choice, toUpperCaseWords, choices, setChoices, choiceIndex, emptyChoicesIndex, removeChoice }) => {
+    choice, toUpperCaseWord, choices, setChoices, choiceIndex, emptyChoicesIndex, removeChoice }) => {
 
     const [optionInput, setOptionInput] = useState(false)
     const [currentChoiceIndex, setCurrentChoiceIndex] = useState(null)
@@ -14,7 +14,7 @@ const ChoiceDetails = ({
         if (optionName && optionPrice) {
             const data = [...choices]
             const options = data[index].options
-            data[index] = { ...data[index], options: [...options, { option_name: toUpperCaseWords(optionName), option_price: formatOptionPrice(optionPrice) }] }
+            data[index] = { ...data[index], options: [...options, { option_name: toUpperCaseWord(optionName), option_price: formatOptionPrice(optionPrice) }] }
 
             setChoices(data)
             setOptionName('')
@@ -147,12 +147,12 @@ const ChoiceDetails = ({
                             <span
                                 onClick={() => addOption(choiceIndex)}
                                 className='mt-2 cursor-pointer'>
-                                <img src="/check-square-fill.svg" className='w-6' alt="" />
+                                <img src="/img/check-square-fill.svg" className='w-6' alt="" />
                             </span>
                             <span
                                 onClick={() => setOptionInput(false)}
                                 className='mt-2 cursor-pointer'>
-                                <img src="/x-square-fill.svg" className='w-6' alt="" />
+                                <img src="/img/x-square-fill.svg" className='w-6' alt="" />
                             </span>
                         </div>
                     </div>

@@ -13,13 +13,13 @@ const Navbar = () => {
 
     return (
         <nav className="py-4 px-6 border-b flex justify-between">
-            <Link to={'/store'} className="text-lg">STORE FRONTEND</Link>
+            <Link to={'/'} className="text-lg">STORE FRONTEND</Link>
             <div>
                 {store && (
                     <div className="relative">
                         <img
                             onClick={() => setProfileDropdown(!profileDropdown)}
-                            src="person-circle.svg"
+                            src="/img/person-circle.svg"
                             className="inline-block w-6 cursor-pointer"
                             alt="" />
 

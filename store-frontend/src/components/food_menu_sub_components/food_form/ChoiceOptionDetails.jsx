@@ -13,7 +13,7 @@ const ChoiceOptionDetails = ({ choice, option, choiceIndex, optionIndex, removeO
                     <p className="text-sm">₱ {option.option_price.toLocaleString()}</p>
                 </div>
                 <span onClick={() => removeOption(choiceIndex, optionIndex)}>
-                    <img src="/x-square-fill.svg" alt="" />
+                    <img src="/img/x-square-fill.svg" alt="" />
                 </span>
             </div>
             <hr />

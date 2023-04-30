@@ -57,7 +57,7 @@ const Store = () => {
                                     selectedTab === 'Dashboard'
                                         ? "px-4 py-4 bg-gray-200"
                                         : "px-4 py-4 hover:bg-gray-100"}>
-                                <span className="inline-block me-3"><img src="/bar-chart.svg" alt=""/></span>
+                                <span className="inline-block me-3"><img src="/img/bar-chart.svg" alt=""/></span>
                                 Dashboard
                             </h1>
 
@@ -67,7 +67,7 @@ const Store = () => {
                                     selectedTab === 'Foods'
                                         ? "px-4 py-4 bg-gray-200"
                                         : "px-4 py-4 hover:bg-gray-100"}>
-                                <span className="inline-block me-3"><img src="/stack.svg" alt=""/></span>
+                                <span className="inline-block me-3"><img src="/img/stack.svg" alt=""/></span>
                                 Foods
                             </h1>
 
@@ -77,7 +77,7 @@ const Store = () => {
                                     selectedTab === 'Orders'
                                         ? "px-4 py-4 bg-gray-200"
                                         : "px-4 py-4 hover:bg-gray-100"}>
-                                <span className="inline-block me-3"><img src="/card-list.svg" alt="" /></span>
+                                <span className="inline-block me-3"><img src="/img/card-list.svg" alt="" /></span>
                                 Orders
                             </h1>
 
@@ -86,7 +86,7 @@ const Store = () => {
                                 className={selectedTab === 'Delivery'
                                     ? "px-4 py-4 bg-gray-200"
                                     : "px-4 py-4 hover:bg-gray-100"}>
-                                <span className="inline-block me-3"><img src="/truck.svg" alt=""/></span>
+                                <span className="inline-block me-3"><img src="/img/truck.svg" alt=""/></span>
                                 Delivery
                             </h1>
 
@@ -95,7 +95,7 @@ const Store = () => {
                                 className={selectedTab === 'Transactions'
                                 ? "px-4 py-4 bg-gray-200"
                                 : "px-4 py-4 hover:bg-gray-100"}>
-                                <span className="inline-block me-3"><img src="/card-checklist.svg" alt=""/></span>
+                                <span className="inline-block me-3"><img src="/img/card-checklist.svg" alt=""/></span>
                                 Transactions
                             </h1>
                         </div>

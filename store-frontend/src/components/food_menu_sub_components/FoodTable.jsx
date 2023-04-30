@@ -6,7 +6,7 @@ const FoodTable = ({ foods }) => {
                     <th scope="col" className="px-6 py-3 flex space-x-1">
                         <p>Food Name</p>
                         <div className="flex">
-                            <span><img src="/sort-up.svg" alt="" /></span>
+                            <span><img src="/img/sort-up.svg" alt="" /></span>
                         </div>
                     </th>
                     <th scope="col" className="px-6 py-3">
