@@ -4,7 +4,9 @@ import ChoiceDetails from './food_form/ChoiceDetails';
 import ChoiceButton from './food_form/ChoiceButton';
 import axiosClient from '../../axios';
 import alert from '../../alert';
+import toUpperCaseWord from '../../toUpperCaseWord'
 import { FoodContext } from '../../context/FoodContext';
+import { Link } from 'react-router-dom';
 
 const FoodForm = ({ categories, setOpenFoodForm }) => {
     const { dispatch } = useContext(FoodContext)
@@ -19,11 +21,12 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
 
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-    const [category, setCategory] = useState(categories[0].category_name)
+    const [category, setCategory] = useState(categories.length ? categories[0].category_name : '')
     const [price, setPrice] = useState('')
     const [hasInstructions, setHasInstructions] = useState(false)
     const [hasChoices, setHasChoices] = useState(false)
     const [choices, setChoices] = useState([])
+    const [image, setImage] = useState(null)
 
     const submitForm = async (e) => {
         e.preventDefault()
@@ -47,17 +50,22 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
         }
 
         const foodData = {
-            name,
+            name: toUpperCaseWord(name),
             description,
             category,
             price,
             has_instructions: hasInstructions,
             has_choices: choices.length !== 0 ? true : false,
-            food_choices: hasChoices ? choices : []
+            food_choices: hasChoices ? choices : [],
+            image: image
         }
 
         try {
-            const response = await axiosClient.post('/foods', foodData)
+            const response = await axiosClient.post('/foods', foodData, {
+                headers: {
+                    'Content-Type' : 'multipart/form-data'
+                }
+            })
             const data = await response.data
             if (response.status === 200) {
                 dispatch({ type: 'ADD_FOOD', payload: data })
@@ -73,14 +81,14 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
 
     const addChoice = () => {
         if (choiceTitle) {
-            const newObject = { 
-                title: toUpperCaseWords(choiceTitle), 
-                type: selectedChoice, 
+            const newObject = {
+                title: toUpperCaseWord(choiceTitle),
+                type: selectedChoice,
                 required: true,
                 select_count: 1,
-                options: [] 
+                options: []
             }
-            
+
             setChoices([...choices, newObject])
             setChoiceTitle('')
             setShowChoiceInput(false)
@@ -91,15 +99,6 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
     const removeChoice = (choiceIndex) => {
         const data = choices.filter((choice, index) => index !== choiceIndex)
         setChoices([...data])
-    }
-
-    const toUpperCaseWords = (name) => {
-        let words = name.split(" ");
-        for (let i = 0; i < words.length; i++) {
-            words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
-        }
-        let result = words.join(" ");
-        return result
     }
 
     return (
@@ -128,7 +127,9 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
                             placeholder="Description" />
                     </div>
                     <div>
-                        <label>Category</label>
+                        <label>Category
+                            <Link to={'/profile'} className='text-sm text-blue-700'> (Add food categories)</Link>
+                        </label>
                         <select
                             onChange={(e) => setCategory(e.target.value)}
                             className={formErrorFields.includes('category') ? "px-2 py-2 w-full border rounded-sm border-red-500" : "px-2 py-2 w-full border rounded-sm border-gray-400"}>
@@ -151,6 +152,18 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
                             placeholder="Price"
                             maxLength={6} />
                     </div>
+
+                    <div>
+                        <label className="text-sm">Image file should not exceeds of 10 mb size</label>
+                        <input
+                            onChange={(e) => setImage(e.target.files[0])}
+                            type="file"
+                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                        {/* {imageError && (
+                            <p className="text-sm absolute text-red-500">{imageError}</p>
+                        )} */}
+                    </div>
+
                     <div className='space-x-2'>
                         <input
                             onChange={() => setHasInstructions(!hasInstructions)}
@@ -179,7 +192,7 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
                                         emptyChoicesIndex={emptyChoicesIndex}
                                         removeChoice={removeChoice}
                                         key={choiceIndex}
-                                        toUpperCaseWords={toUpperCaseWords} />
+                                        toUpperCaseWord={toUpperCaseWord} />
                                 )
 
                             })}
@@ -195,15 +208,15 @@ const FoodForm = ({ categories, setOpenFoodForm }) => {
                                     <div className='flex space-x-2'>
                                         <span onClick={addChoice} className='mt-2 cursor-pointer'>
                                             <img
-                                                src="/check-square-fill.svg"
-                                                className='w-6' 
-                                                alt=''/>
+                                                src="/img/check-square-fill.svg"
+                                                className='w-6'
+                                                alt='' />
                                         </span>
                                         <span onClick={() => setShowChoiceInput(false)} className='mt-2 cursor-pointer'>
                                             <img
-                                                src="/x-square-fill.svg"
-                                                className='w-6' 
-                                                alt=''/>
+                                                src="/img/x-square-fill.svg"
+                                                className='w-6'
+                                                alt='' />
                                         </span>
                                     </div>
                                 </div>
