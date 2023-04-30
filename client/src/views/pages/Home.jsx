@@ -115,7 +115,7 @@ const Home = () => {
                             return (
                                 <div key={type._id}>
                                     <h1 id={type.name} className="font-semibold text-xl uppercase">{type.name}</h1>
-                                    <div className="grid grid-cols-2 gap-x-3 py-2 md:grid-cols-3">
+                                    <div className="grid grid-cols-2 gap-3 py-2 md:grid-cols-3">
 
                                         {storesByType.length > 0 && storesByType.map((store) => (
                                             <StoreDetails store={store} key={store._id} />
