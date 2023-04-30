@@ -8,6 +8,9 @@ import ShowFood from "../../components/foods/ShowFood";
 import axiosClient from "../../axios";
 
 const ShowStore = () => {
+    // TODO:: PAGINATION IN FOOD LIST (STORE SIDE) , LIMIT DISPLAY OF FOOD
+    // ADD VIEW MORE BUTTON TO LOAD MORE FOODS
+    
     const { id } = useParams()
     const [store, setStore] = useState()
     const { foods, dispatch } = useContext(FoodContext)
