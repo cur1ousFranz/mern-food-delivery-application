@@ -12,7 +12,7 @@ const storeSchema = new Schema({
     },
     floor_suit: {
         type: String,
-        required: true
+        default: null
     },
     store_name: {
         type: String,
@@ -49,6 +49,10 @@ const storeSchema = new Schema({
         required: true
     },
     image: {
+        type: String,
+        default: null
+    },
+    open_hours: {
         type: String,
         default: null
     }
