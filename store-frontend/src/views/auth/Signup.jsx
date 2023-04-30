@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import axiosClient from "../../axios";
 import numbersOnly from "../../numberkeys";
 import { AuthContext } from "../../context/AuthContext";
+import alert from "../../alert";
 
 const Signup = () => {
     const [businessTypes, setBusinessTypes] = useState([])
     const { dispatch } = useContext(AuthContext)
+
+    const [passwordError, setPasswordError] = useState('')
+    const [formError, setFormError] = useState('')
+    const [formErrorFields, setFormErrorFields] = useState([])
 
     const [storeName, setStoreName] = useState('')
     const [brandName, setBrandName] = useState('')
@@ -22,8 +27,9 @@ const Signup = () => {
 
     const submitForm = async (e) => {
         e.preventDefault()
-
+        setPasswordError('')
         if (password !== confirmPassword) {
+            setPasswordError('Password does not match.')
             return
         }
 
@@ -44,12 +50,14 @@ const Signup = () => {
             const response = await axiosClient.post('/stores', formData)
             const data = await response.data
 
-            if(response.status === 200) {
-                dispatch({ type: 'LOGIN', payload: data})
+            if (response.status === 200) {
+                dispatch({ type: 'LOGIN', payload: data })
                 localStorage.setItem('store', JSON.stringify(data))
+                alert('Signup successfully')
             }
         } catch (error) {
-            console.log(error)
+            setFormError(error.response.data.error)
+            setFormErrorFields(error.response.data.errorFields)
         }
     }
 
@@ -79,6 +87,9 @@ const Signup = () => {
         <div className="px-12 flex justify-end bg-slate-100">
             <form onSubmit={submitForm} className="w-2/5 py-4 px-6 border mt-3 bg-white">
                 <h1 className="font-semibold text-2xl">Get Started</h1>
+                {formError && (
+                    <p className="text-sm absolute text-red-500">{formError}</p>
+                )}
                 <div className="py-6 space-y-5">
                     <div>
                         <label>Store Name</label>
@@ -86,7 +97,9 @@ const Signup = () => {
                             onChange={(e) => setStoreName(e.target.value)}
                             value={storeName}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400"
+                            className={formErrorFields && formErrorFields.includes('store_name')
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"}
                             placeholder="Ex. Sam's Pizza - 123 Main street" />
 
                     </div>
@@ -96,7 +109,9 @@ const Signup = () => {
                             onChange={(e) => setBrandName(e.target.value)}
                             value={brandName}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400"
+                            className={formErrorFields && formErrorFields.includes('brand_name')
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"}
                             placeholder="Ex. Sam's Pizza" />
                         <p className="text-xs">We’ll use this to help organize information that is shared across stores, such as menus.</p>
                     </div>
@@ -106,7 +121,9 @@ const Signup = () => {
                             onChange={(e) => setStoreAddress(e.target.value)}
                             value={storeAddress}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                            className={formErrorFields && formErrorFields.includes('store_address')
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
 
                     </div>
                     <div>
@@ -115,14 +132,16 @@ const Signup = () => {
                             onChange={(e) => setFloorSuit(e.target.value)}
                             value={floorSuit}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                            className="px-2 py-2 w-full bg-gray-100 rounded-md" />
 
                     </div>
                     <div>
                         <label>Business Type</label>
                         <select
                             onChange={(e) => setBusinessType(e.target.value)}
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400">
+                            className={formErrorFields && formErrorFields.includes('business_type')
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"}>
                             {businessTypes && businessTypes.map(type => (
                                 <option value={type.name} key={type._id}>{type.name}</option>
                             ))}
@@ -135,7 +154,9 @@ const Signup = () => {
                                 onChange={(e) => setFirstname(e.target.value)}
                                 value={firstname}
                                 type="text"
-                                className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                                className={formErrorFields && formErrorFields.includes('first_name')
+                                    ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                    : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
 
                         </div>
                         <div>
@@ -144,8 +165,9 @@ const Signup = () => {
                                 onChange={(e) => setLastname(e.target.value)}
                                 value={lastname}
                                 type="text"
-                                className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
-
+                                className={formErrorFields && formErrorFields.includes('last_name')
+                                    ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                    : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
                         </div>
                     </div>
                     <div>
@@ -154,8 +176,9 @@ const Signup = () => {
                             onChange={(e) => setEmail(e.target.value)}
                             value={email}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
-
+                            className={formError === 'Email is invalid.' || formError === 'Email is required.'
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
                     </div>
                     <div>
                         <label>Mobile Phone Number</label>
@@ -164,7 +187,9 @@ const Signup = () => {
                             onKeyDown={numbersOnly}
                             value={phoneNumber}
                             type="text"
-                            className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                            className={formErrorFields && formErrorFields.includes('contact_number')
+                                ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
 
                     </div>
                     <div className="flex space-x-4">
@@ -174,8 +199,12 @@ const Signup = () => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 value={password}
                                 type="password"
-                                className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
-
+                                className={passwordError
+                                    ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
+                                    : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
+                            {passwordError && (
+                                <p className="text-sm absolute text-red-500">{passwordError}</p>
+                            )}
                         </div>
                         <div>
                             <label>Confirm Password</label>
@@ -183,7 +212,9 @@ const Signup = () => {
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 value={confirmPassword}
                                 type="password"
-                                className="px-2 py-2 w-full bg-gray-100 rounded-md border-gray-400" />
+                                className={passwordError
+                                    ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-m"
+                                    : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
 
                         </div>
                     </div>
