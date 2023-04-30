@@ -1,3 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: #FFFFFF;
+    overflow-x: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-header {
+    padding: 30px;
+}
+
+.modal-footer {
+    padding: 15px;
+    display: flex;
+    text-align: center;
+}
+
+.modal-header {
+    position: relative;
+    justify-content: center;
+}
+
+
+.modal-footer {
+    border-top: 1px solid #eeeeee;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.modal-fade-enter,
+.modal-fade-leave-to {
+    opacity: 0;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+    transition: opacity .5s ease;
+}
+
+/* SCROOL BAR MODIFY */
+.active {
+    --tw-text-opacity: 1;
+    color: rgb(249 115 22 / var(--tw-text-opacity));
+    text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    background-color: #F5F5F5;
+}
+
+/* Webkit browsers */
+::-webkit-scrollbar-thumb {
+    background-color: #c2bdbd;
+}
