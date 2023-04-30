@@ -30,13 +30,21 @@ const Profile = () => {
         <div className="px-4 md:px-12 py-6" >
             <h1 className="text-2xl font-semibold">Profile</h1>
             <div className="mt-3 flex space-x-4 p-4 rounded-md">
-                <div className="hidden md:block w-1/4 border-r max-h-screen sticky top-0 overflow-y-auto">
+                <div className="hidden md:block w-1/4 max-h-screen sticky top-0 overflow-y-auto">
+                    <div className="flex justify-center border-b py-3">
+                        <img
+                            src={storeData.image 
+                                ? `http://localhost:4000/${storeData.image}` 
+                                : "/img/store.png"}
+                            className="object-cover w-72"
+                            alt="" />
+                    </div>
                     <h1
                         onClick={() => setCurrentTab('Store')}
                         className={currentTab === 'Store'
-                            ? "cursor-pointer p-4 rounded-sm bg-orange-200 text-gray-700"
-                            : "cursor-pointer p-4 rounded-sm hover:bg-orange-100 hover:text-gray-700"}>
-                        <span className="inline-block mr-2"><img src="/shop.svg" alt="" /></span>
+                            ? "cursor-pointer mt-4 p-4 rounded-sm bg-orange-200 text-gray-700"
+                            : "cursor-pointer mt-4 p-4 rounded-sm hover:bg-orange-100 hover:text-gray-700"}>
+                        <span className="inline-block mr-2"><img src="/img/shop.svg" alt="" /></span>
                         Store
                     </h1>
                     <h1
@@ -44,7 +52,7 @@ const Profile = () => {
                         className={currentTab === 'Credentials'
                             ? "cursor-pointer p-4 rounded-sm bg-orange-200 text-gray-700"
                             : "cursor-pointer p-4 rounded-sm hover:bg-orange-100 hover:text-gray-700"}>
-                        <span className="inline-block mr-2"><img src="/key.svg" alt="" /></span>
+                        <span className="inline-block mr-2"><img src="/img/key.svg" alt="" /></span>
                         Credentials
                     </h1>
                     <h1
@@ -52,7 +60,7 @@ const Profile = () => {
                         className={currentTab === 'Settings'
                             ? "cursor-pointer p-4 rounded-sm bg-orange-200 text-gray-700"
                             : "cursor-pointer p-4 rounded-sm hover:bg-orange-100 hover:text-gray-700"}>
-                        <span className="inline-block mr-2"><img src="/gear-fill.svg" alt="" /></span>
+                        <span className="inline-block mr-2"><img src="/img/gear-fill.svg" alt="" /></span>
                         Settings
                     </h1>
                     <h1
@@ -60,14 +68,17 @@ const Profile = () => {
                         className={currentTab === 'Staffs'
                             ? "cursor-pointer p-4 rounded-sm bg-orange-200 text-gray-700"
                             : "cursor-pointer p-4 rounded-sm hover:bg-orange-100 hover:text-gray-700"}>
-                        <span className="inline-block mr-2"><img src="/people.svg" alt="" /></span>
+                        <span className="inline-block mr-2"><img src="/img/people.svg" alt="" /></span>
                         Staffs
                     </h1>
                 </div>
 
                 <div className="w-2/3">
                     {currentTab === 'Store' && (
-                        <ProfileStore store={store} setStoreData={setStoreData} />
+                        <ProfileStore
+                            store={store}
+                            setStoreData={setStoreData}
+                            storeData={storeData} />
                     )}
 
                 </div>
