@@ -137,6 +137,28 @@ const getStoreFoods = async (req, res) => {
     res.status(200).json(foods)
 }
 
+// const getStoreFoods = async (req, res) => {
+//     const { id } = req.params;
+//     const { page = 0, limit = 10 } = req.query // default to page 1 and limit 10
+
+//     if (!isValidObjectId(id)) {
+//         return res.status(404).json({ error: "No such store" })
+//     }
+
+//     const skip = page * limit
+
+//     const foods = await Food.find({ store_id: id })
+//         .sort({ createdAt: -1 })
+//         .skip(skip)
+//         .limit(limit)
+
+//     if (!foods) {
+//         return res.status(400).json({ error: "No such store" })
+//     }
+
+//     res.status(200).json(foods)
+// }
+
 // Storing image
 const storage = multer.diskStorage({
     destination: './public/uploads/food/',
