@@ -16,9 +16,14 @@ const CheckoutFood = ({ food }) => {
     return (
         <div>
             <div className="grid grid-cols-4 gap-x-2">
-                <img src="/img/food_image.png" className="w-36" alt="" />
+                <img
+                    src={food.image
+                        ? `http://localhost:4000/${food.image}`
+                        : "/img/food_image.png"}
+                    className="w-42 p-1 shadow-sm border"
+                    alt="" />
 
-                <h1 className="flex items-center">{food.name} qwdddddddddddd qwdddddd</h1>
+                <p className="flex items-center">{food.name}</p>
 
                 <div className="flex items-center space-x-0.5">
                     <button
@@ -72,7 +77,7 @@ const CheckoutFood = ({ food }) => {
                     <span className="font-normal"> {food.instruction}</span>
                 </h1>
             )}
-            <hr className="mt-8"/>
+            <hr className="mt-8" />
         </div>
     );
 }

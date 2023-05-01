@@ -32,8 +32,10 @@ const BasketFood = ({ food }) => {
             <div className="flex space-x-12 w-full">
                 <div className="w-1/2">
                     <img
-                        src="/img/food_image.png"
-                        className="rounded-md object-cover"
+                        src={food.image
+                            ? `http://localhost:4000/${food.image}`
+                            : "/img/food_image.png"}
+                        className="rounded-md object-cover p-1 shadow-sm border"
                         alt=""
                         style={{ minHeight: "7rem", maxHeight: "7rem" }} />
                 </div>
