@@ -1,29 +1,30 @@
-import { useState } from "react";
+const FoodCategories = ({
+    categories,
+    setcurrentFoodCategory,
+    currentFoodCategory,
+}) => {
 
-const FoodCategories = ({ categories, selectCategory, currentFoodCategory }) => {
-    const handleClick = (category) => {
-        selectCategory(category)
+    const handleSmoothScroll = (event, name) => {
+        event.preventDefault()
+        document.getElementById(name).scrollIntoView({ behavior: "smooth" });
     }
 
     return (
         <div>
-            <div className="my-4">
-                <p
-                    onClick={() => handleClick('All')}
-                    className={currentFoodCategory === 'All'
-                        ? "px-2 py-4 rounded-sm cursor-pointer bg-orange-200"
-                        : "px-2 py-4 rounded-sm cursor-pointer text-gray-700 hover:text-gray-900 hover:bg-orange-200"}>
-                    All
-                </p>
+            <div className="my-4 flex flex-col">
                 {categories.map(category => (
-                    <p
-                        onClick={() => handleClick(category.category_name)}
+                    <a
+                        href={`#${category.category_name}`}
+                        onClick={(e) => {
+                            handleSmoothScroll(e, category.category_name)
+                            setcurrentFoodCategory(category.category_name)
+                        }}
                         className={currentFoodCategory === category.category_name
                             ? "px-2 py-4 rounded-sm cursor-pointer bg-orange-300"
                             : "px-2 py-4 rounded-sm cursor-pointer text-gray-700 hover:text-gray-900 hover:bg-orange-200"}
                         key={category._id}>
                         {category.category_name}
-                    </p>
+                    </a>
                 ))}
             </div>
         </div>

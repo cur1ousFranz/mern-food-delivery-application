@@ -8,20 +8,21 @@ import ShowFood from "../../components/foods/ShowFood";
 import axiosClient from "../../axios";
 
 const ShowStore = () => {
-    // TODO:: PAGINATION IN FOOD LIST (STORE SIDE) , LIMIT DISPLAY OF FOOD
-    // ADD VIEW MORE BUTTON TO LOAD MORE FOODS
-    
+    // TODO:: PAGINATION IN FOOD LIST (STORE SIDE)
+
     const { id } = useParams()
     const [store, setStore] = useState()
     const { foods, dispatch } = useContext(FoodContext)
     const [foodList, setFoodList] = useState([]);
     const [search, setSearch] = useState('')
-    const [message, setMessage] = useState(true)
     const [foodsLoading, setFoodsLoading] = useState(false)
     const [currentFoodCategory, setcurrentFoodCategory] = useState('All')
     const [error, setError] = useState(false)
     const [viewFood, setViewFood] = useState(false)
     const [selectedFood, setSelectedFood] = useState(null)
+
+    // const [currentPage, setCurrentPage] = useState(1)
+    // const [moreDataAvailable, setMoreDataAvailable] = useState(true)
 
     useEffect(() => {
 
@@ -51,12 +52,6 @@ const ShowStore = () => {
             if (response.status === 200) {
                 dispatch({ type: 'SET_FOODS', payload: foodsData })
 
-                // Check if there is available food products in current selected store
-                foodsData.map((food) => {
-                    if (food.store_id === id && message) {
-                        setMessage(false);
-                    }
-                })
             }
         }
 
@@ -66,7 +61,7 @@ const ShowStore = () => {
     }, [])
 
     useEffect(() => {
-        // Initialize foodList with the foods from context API
+        // Listen to foods changes and set data to foodList
         setFoodList(foods);
 
     }, [foods]);
@@ -83,14 +78,30 @@ const ShowStore = () => {
         setFoodList(filteredFoodList);
     };
 
-    const selectCategory = (category) => {
-        setcurrentFoodCategory(category)
-    }
-
     const selectFood = (value, food = null) => {
         setViewFood(value)
         setSelectedFood(food)
     }
+
+    // const viewMoreFoods = async () => {
+    //     try {
+    //         const response = await axiosClient.get(`/foods/store/${id}?limit=10&page=${currentPage}`)
+    //         const data = await response.data
+    //         if (response.status === 200) {
+    //             dispatch({ type: 'SET_FOODS', payload: [...foodList, ...data] })
+    //             setCurrentPage(currentPage + 1)
+
+    //             if(data.length < 10) {
+    //                 setMoreDataAvailable(false)
+    //             }
+    //         }
+    //     } catch (error) {
+    //         const status = error.response.status
+    //         if (status === 400 || status === 404) {
+    //             setError(true)
+    //         }
+    //     }
+    // }
 
     return (
         <div className="px-4 md:px-12 py-8" >
@@ -156,36 +167,36 @@ const ShowStore = () => {
                             {store && (
                                 <FoodCategories
                                     categories={store.food_categories}
-                                    selectCategory={selectCategory}
+                                    setcurrentFoodCategory={setcurrentFoodCategory}
                                     currentFoodCategory={currentFoodCategory} />
                             )}
                         </div>
                     </div>
 
                     <div className="w-full">
-                        {!error && !foodsLoading && foodList && (
-                            <div className="grid grid-cols-2 gap-4 py-8 ">
-                                {foodList.map((food) => {
-                                    if (currentFoodCategory === 'All') {
-                                        return (
-                                            <FoodDetails
-                                                food={food}
-                                                key={food._id}
-                                                selectFood={selectFood} />
-                                        )
-                                    }
-
-                                    if (currentFoodCategory === food.category) {
-                                        return (
-                                            <FoodDetails
-                                                food={food}
-                                                key={food._id}
-                                                selectFood={selectFood} />
-                                        )
-                                    }
-                                })}
+                        {store && store.food_categories.map(category => (
+                            <div key={category._id} className="mt-3">
+                                <h1
+                                    className="font-semibold text-lg px-4 py-3 rounded-md bg-gray-100 text-gray-600"
+                                    id={category.category_name}>
+                                    {category.category_name}
+                                </h1>
+                                {!error && !foodsLoading && foodList && (
+                                    <div className="grid grid-cols-2 gap-4 py-4">
+                                        {foodList.map((food) => {
+                                            if (category.category_name === food.category) {
+                                                return (
+                                                    <FoodDetails
+                                                        food={food}
+                                                        key={food._id}
+                                                        selectFood={selectFood} />
+                                                )
+                                            }
+                                        })}
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        ))}
 
                         {!error && foodsLoading && (
                             <div>
@@ -193,11 +204,22 @@ const ShowStore = () => {
                             </div>
                         )}
 
-                        {!error && !foodsLoading && message && (
+                        {!error && !foodsLoading && foodList && foodList.length === 0 && (
                             <div className="text-center shadow-md border bg-gray-200 p-24">
                                 <p className="text-2xl font-bold text-gray-500">Coming soon..</p>
                             </div>
                         )}
+
+                        {/* {!error && !foodsLoading && foodList && foodList.length > 0 && moreDataAvailable && (
+                            <div className="flex justify-center w-full">
+                                <button
+                                    onClick={viewMoreFoods}
+                                    className="px-3 py-2 bg-orange-500 text-white">
+                                    View More
+                                </button>
+                            </div>
+                        )} */}
+
                     </div>
                 </div>
             )}
