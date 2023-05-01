@@ -52,7 +52,9 @@ const Home = () => {
             <div className="grid grid-cols-3 gap-x-6">
                 <div className="rounded-xl flex bg-lime-200">
                     <div className="w-2/3 p-4 flex flex-col justify-between">
-                        <h1 className="text-2xl font-bold text-gray-800">Buy One Get One at Eva's x Cinco de Mayo</h1>
+                        <h1 className="text-2xl font-bold text-gray-800">
+                            Buy One Get One at Eva's x Cinco de Mayo
+                        </h1>
                         <p className="text-sm text-gray-700">Order now</p>
                     </div>
                     <div className="w-1/3">
