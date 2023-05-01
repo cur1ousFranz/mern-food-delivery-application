@@ -2,10 +2,21 @@ import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
 import CheckoutFood from "../../components/checkout/CheckoutFood";
 import { Link } from "react-router-dom";
+import { AuthContext } from '../../context/AuthContext'
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
+    // TODO:: PLACE CUSTOMER ORDER, ADD ORDER PAGE
+    const navigate = useNavigate();
     const { basket } = useContext(BasketContext)
     const [totalPrice, setTotalPrice] = useState(0)
+    const { user } = useContext(AuthContext)
+
+    const paymentButton = () => {
+        if (!user) {
+            navigate('/signin')
+        }
+    }
 
     useEffect(() => {
         if (basket) {
@@ -45,7 +56,7 @@ const Checkout = () => {
                     </div>
 
                     {basket.length > 0 && (
-                        <div className="border max-h-screen overflow-auto rounded-md mt-4 font-semibold p-4 shadow-sm text-gray-700 bg-white">
+                        <div className="border max-h-screen overflow-auto rounded-md mt-4 p-4 shadow-sm text-gray-700 bg-white">
                             {basket.map(food => (
                                 <CheckoutFood food={food} key={food.uuid} />
                             ))}
@@ -80,7 +91,9 @@ const Checkout = () => {
                         </div>
                         <div className="mt-3 flex justify-between">
                             {basket.length > 0 && (
-                                <button className="uppercase w-full rounded-sm py-2 px-4 bg-orange-500 hover:bg-orange-400 text-white">
+                                <button
+                                    onClick={paymentButton}
+                                    className="uppercase w-full rounded-sm py-2 px-4 bg-orange-500 hover:bg-orange-400 text-white">
                                     Continue to Payment
                                 </button>
                             )}
