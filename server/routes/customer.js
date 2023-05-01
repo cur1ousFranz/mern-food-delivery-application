@@ -7,10 +7,10 @@ const {
     updateCustomer
 } = require('../controllers/customerController')
 
+router.post('/api/customers', storeCustomer)
+
 // AUTH MIDDLEWARE
 const requireAuth = require('../middleware/requireAuth')
-
-router.post('/api/customers', storeCustomer)
 
 router.use(requireAuth)
 router.get('/api/customers', getAllCustomers)
