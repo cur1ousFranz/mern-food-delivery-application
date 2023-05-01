@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Basket from "../basket/Basket";
 
@@ -38,7 +38,10 @@ const Navbar = () => {
                             <div className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
                                 <div className="rounded-md border shadow-xs text-start px-2 bg-white">
                                     <div className="p-2">
-                                        <button onClick={signoutUser} className="w-full">Sign out</button>
+                                        <Link
+                                            to={'/'}
+                                            onClick={signoutUser}
+                                            className="w-full">Sign out</Link>
                                     </div>
                                 </div>
                             </div>
