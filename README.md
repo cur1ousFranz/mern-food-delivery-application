@@ -94,6 +94,7 @@ npm run start
 * Customer can update their profile information, credentials.
 * Customer browse all food products and add them in basket or cart.
 * Customer can manage their total amount in their cart thru Checkout page.
+* Customer may place an order depending what food product in their basket.
 * Store notified with orders that customer's made.
 * Store can update their profile information, credentials.
 * Store manage food products, transactions and reports.
