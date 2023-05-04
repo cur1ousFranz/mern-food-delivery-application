@@ -35,8 +35,18 @@ const Navbar = () => {
                             alt="" />
 
                         {profileDropdown && (
-                            <div className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
+                            <div onMouseLeave={() => setprofileDropdown(false)} className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
                                 <div className="rounded-md border shadow-xs text-start px-2 bg-white">
+                                    <div className="p-2">
+                                        <Link
+                                            to={'/profile'}
+                                            className="w-full">Profile</Link>
+                                    </div>
+                                    <div className="p-2">
+                                        <Link
+                                            to={'/orders'}
+                                            className="w-full">Orders</Link>
+                                    </div>
                                     <div className="p-2">
                                         <Link
                                             to={'/'}
