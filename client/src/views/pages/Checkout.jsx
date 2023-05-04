@@ -4,18 +4,60 @@ import CheckoutFood from "../../components/checkout/CheckoutFood";
 import { Link } from "react-router-dom";
 import { AuthContext } from '../../context/AuthContext'
 import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios";
+import alert from "../../alert";
 
 const Checkout = () => {
     // TODO:: PLACE CUSTOMER ORDER, ADD ORDER PAGE
     const navigate = useNavigate();
+    const { dispatch } = useContext(BasketContext)
     const { basket } = useContext(BasketContext)
     const [totalPrice, setTotalPrice] = useState(0)
     const { user } = useContext(AuthContext)
 
-    const paymentButton = () => {
+    const paymentButton = async () => {
         if (!user) {
             navigate('/signin')
+            return
         }
+
+        // SKIP Payment flow, direct to place the error
+        const orders = []
+        basket.map(food => {
+            const { _id, store_id, foodQuantity, has_choices,
+                choice_options, has_instructions, instruction,
+            } = food
+
+            const total_price = (food.price + food.choicesPrice) * food.foodQuantity
+
+            orders.push({
+                food_id: _id,
+                store_id,
+                food_quantity: foodQuantity,
+                has_choices,
+                choice_options,
+                has_instructions,
+                instruction,
+                total_price,
+                payment_type: 'COD'
+            })
+        })
+
+        try {
+            for(const order of orders) {
+                const response = await axiosClient.post('/orders', order)
+                // const data = await response.data
+            }
+
+            basket.forEach(food => {
+                dispatch({ type: 'REMOVE_TO_BASKET', payload: { uuid: food.uuid}})
+            })
+            alert('Order placed successfully')
+
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     useEffect(() => {
