@@ -10,28 +10,32 @@ const Home = () => {
 
     useEffect(() => {
 
-        const getAllStores = async () => {
+        try {
+            const getAllStores = async () => {
 
-            const response = await axiosClient.get('/stores')
-            const data = response.data
+                const response = await axiosClient.get('/stores')
+                const data = response.data
 
-            if (response.status === 200) {
-                dispatch({ type: 'SET_STORES', payload: data })
+                if (response.status === 200) {
+                    dispatch({ type: 'SET_STORES', payload: data })
+                }
+
             }
 
-        }
+            const getAllBusinessTypes = async () => {
+                const response = await axiosClient.get('/business-type')
+                const data = response.data
 
-        const getAllBusinessTypes = async () => {
-            const response = await axiosClient.get('/business-type')
-            const data = response.data
-
-            if (response.status === 200) {
-                setBusinessTypes(data)
+                if (response.status === 200) {
+                    setBusinessTypes(data)
+                }
             }
-        }
 
-        getAllStores()
-        getAllBusinessTypes()
+            getAllStores()
+            getAllBusinessTypes()
+        } catch (error) {
+            console.log(error);
+        }
 
     }, [])
 
