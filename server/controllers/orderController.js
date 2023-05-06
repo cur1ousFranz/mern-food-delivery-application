@@ -23,6 +23,7 @@ const storeOrder = async (req, res) => {
         instruction,
         total_price,
         payment_type,
+        status
     } = req.body
     const user_id = extractUserId(req)
     const customer = await Customer.findOne({ user_id }).select('_id')
@@ -39,6 +40,7 @@ const storeOrder = async (req, res) => {
             instruction,
             total_price,
             payment_type,
+            status
         })
 
         res.status(200).json(order)

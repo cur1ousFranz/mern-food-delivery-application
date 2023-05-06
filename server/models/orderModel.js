@@ -51,6 +51,10 @@ const orderSchema = new Schema({
     payment_type: {
         type: String,
         required: true
+    },
+    status: {
+        type: String,
+        required: true
     }
 }, { timestamps: true})
 

@@ -39,18 +39,18 @@ const Checkout = () => {
                 has_instructions,
                 instruction,
                 total_price,
-                payment_type: 'COD'
+                payment_type: 'COD',
+                status: 'Pending'
             })
         })
 
         try {
-            for(const order of orders) {
-                const response = await axiosClient.post('/orders', order)
-                // const data = await response.data
+            for (const order of orders) {
+                await axiosClient.post('/orders', order)
             }
 
             basket.forEach(food => {
-                dispatch({ type: 'REMOVE_TO_BASKET', payload: { uuid: food.uuid}})
+                dispatch({ type: 'REMOVE_TO_BASKET', payload: { uuid: food.uuid } })
             })
             alert('Order placed successfully')
 
