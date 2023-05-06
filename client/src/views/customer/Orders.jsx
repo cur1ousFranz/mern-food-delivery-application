@@ -1,8 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import OrderList from "../../components/order/OrderList";
+import axiosClient from '../../axios'
 
 const Orders = () => {
 
     const [currentTab, setCurrentTab] = useState('Order')
+    const [orders, setOrders] = useState([])
+
+    useEffect(() => {
+        
+        const getAllOrders = async () => {
+            try {
+                const response = await axiosClient.get('/orders')
+                const data = await response.data
+                if(response.status === 200) {
+                    setOrders(data)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        getAllOrders()
+    },[])
 
     return (
         <div className="px-4 md:px-12 py-6" >
@@ -38,22 +58,10 @@ const Orders = () => {
                 <div className="w-full p-4 border-l">
 
                     {/* IF TAB IS ORDER */}
-                    <div className="shadow-sm rounded-3xl border grid grid-cols-3 cursor-pointer hover:shadow-md">
-                        <img src="/img/food1.jpeg" className="rounded-l-3xl" alt="" />
+                    {currentTab === 'Order' && (
+                        <OrderList orders={orders} />
+                    )}
 
-                        <div className="py-3 space-y-2">
-                            <h1 className="font-bold text-xl">Chicken Menudo Family Size</h1>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, ut.</p>
-                            <p>Total: <span className="text-lg text-orange-500">₱</span> 100,200</p>
-                            <p>Delivery: <span className="text-orange-800">Pending</span></p>
-                        </div>
-
-                        {/* Check if food has choices otherwise dont show this */}
-                        <div className="px-2 py-3 space-y-2">
-                            <h1 className="font-bold text-xl">Food Choices</h1>
-                            
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
