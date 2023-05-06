@@ -37,21 +37,21 @@ const Navbar = () => {
                         {profileDropdown && (
                             <div onMouseLeave={() => setprofileDropdown(false)} className="origin-top-right absolute right-0 mr-4 mt-2 w-44 z-10 rounded-md shadow-lg">
                                 <div className="rounded-md border shadow-xs text-start px-2 bg-white">
-                                    <div className="p-2">
+                                    <div className="p-2 hover:bg-gray-100">
                                         <Link
                                             to={'/profile'}
-                                            className="w-full">Profile</Link>
+                                            className="w-full inline-block">Profile</Link>
                                     </div>
-                                    <div className="p-2">
+                                    <div className="p-2 hover:bg-gray-100">
                                         <Link
                                             to={'/orders'}
-                                            className="w-full">Orders</Link>
+                                            className="w-full inline-block">Orders</Link>
                                     </div>
-                                    <div className="p-2">
+                                    <div className="p-2 hover:bg-gray-100">
                                         <Link
                                             to={'/'}
                                             onClick={signoutUser}
-                                            className="w-full">Sign out</Link>
+                                            className="w-full inline-block">Sign out</Link>
                                     </div>
                                 </div>
                             </div>
