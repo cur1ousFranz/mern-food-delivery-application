@@ -14,12 +14,12 @@ const storeCustomer = async (req, res) => {
 
     try {
         const user = await User.signup(email, password, role)
-        const customer = await Customer.create({ user_id: user._id, name: '', contact_number: '', address: ''})
+        const customer = await Customer.create({ user_id: user._id, name: '', contact_number: '', address: '' })
         const token = createToken(user._id)
         res.status(200).json({ email, token, is_role: user.role, id: customer._id })
 
     } catch (error) {
-        res.status(500).json({ error : error.message })
+        res.status(500).json({ error: error.message })
     }
 }
 
@@ -27,28 +27,32 @@ const updateCustomer = async (req, res) => {
     const { id } = req.params
     const { name, contact_number, address } = req.body
 
-    const errorFields = { error: "Pleae fill in all fields" }
+    const errorFields = []
+    let errorMessage = 'Please fill in all fields.'
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({ error: "No such customer" })
     }
     if (!name) {
-        return res.status(400).json(errorFields)
+        errorFields.push('name')
     }
     if (!contact_number) {
-        return res.status(400).json(errorFields)
+        errorFields.push('contact_number')
     }
     if (!address) {
-        return res.status(400).json(errorFields)
+        errorFields.push('address')
     }
-    
-    try {
-        const result = await Customer.findByIdAndUpdate({  _id: id }, { name, contact_number, address })
+    if (errorFields.length > 0) {
+        return res.status(400).json({ error: errorMessage, errorFields })
+    }
 
-        if(!result) {
+    try {
+        const result = await Customer.findByIdAndUpdate({ _id: id }, { name, contact_number, address })
+
+        if (!result) {
             return res.status(404).json({ error: "No such customer" })
         }
-        const customer = await Customer.findById({ _id: id})
+        const customer = await Customer.findById({ _id: id })
 
         res.status(200).json(customer)
 
