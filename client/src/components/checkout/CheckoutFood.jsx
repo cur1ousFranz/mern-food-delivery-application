@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
+import { BASE_URL } from "../../constants";
+
 
 const CheckoutFood = ({ food }) => {
     const { dispatch } = useContext(BasketContext)
@@ -18,7 +20,7 @@ const CheckoutFood = ({ food }) => {
             <div className="grid grid-cols-4 gap-x-2">
                 <img
                     src={food.image
-                        ? `http://localhost:4000/${food.image}`
+                        ? `${BASE_URL}/${food.image}`
                         : "/img/food_image.png"}
                     className="w-42 p-1 shadow-sm border"
                     alt="" />

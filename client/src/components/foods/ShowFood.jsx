@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
 import { v4 as uuidv4 } from 'uuid'
 import ChoiceOptionDetails from "./ChoiceOptionDetails";
+import { BASE_URL } from "../../constants";
 
 const ShowFood = ({ selectFood, selectedFood }) => {
     const { dispatch } = useContext(BasketContext)
@@ -167,7 +168,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
                     </div>
                     <img
                         src={selectedFood.image
-                            ? `http://localhost:4000/${selectedFood.image}`
+                            ? `${BASE_URL}/${selectedFood.image}`
                             : "/img/food_image.png"}
                         className="w-full shadow-sm mt-2 rounded-md h-full object-cover"
                         alt="" />

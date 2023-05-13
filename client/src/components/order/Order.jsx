@@ -24,15 +24,16 @@ const Order = ({ order }) => {
     return (
         <div>
             {food && (
-                <div className="grid grid-cols-2 cursor-pointer">
+                <div className="grid cursor-pointer grid-cols-1 md:grid-cols-2">
                     <img
                         src={food.image
                             ? `${BASE_URL}/${food.image}`
                             : "/img/food_image.png"}
+                        className="rounded-md"
                         alt="" />
 
                     <div>
-                        <div className="px-6 space-y-2">
+                        <div className="space-y-2 mt-4 md:mt-0 md:px-6">
                             <h1 className="font-bold text-xl">{food.name}</h1>
                             <p className="text-sm">{food.description}</p>
                             <p>Total: <span className="text-lg text-orange-500">₱ </span>{order.total_price.toLocaleString()}</p>
@@ -41,7 +42,7 @@ const Order = ({ order }) => {
 
                         {/* Check if food has choices otherwise dont show this */}
                         {order.has_choices && (
-                            <div className="px-6 py-4 space-y-2">
+                            <div className="py-4 space-y-2 md:px-6">
                                 <h1 className="font-bold text-xl">Food Choices</h1>
 
                                 {order.choice_options.map((choice, index) => (
@@ -76,7 +77,6 @@ const Order = ({ order }) => {
 
                 </div>
             )}
-            <hr className="mt-6" />
         </div>
     );
 }

@@ -1,3 +1,5 @@
+import { BASE_URL } from "../../constants";
+
 const FoodDetails = ({ food, selectFood }) => {
     return (
         <div
@@ -7,7 +9,7 @@ const FoodDetails = ({ food, selectFood }) => {
                 : "rounded-md border border-l-4 border-gray-500 cursor-pointer shadow-sm flex hover:shadow-xl"}>
             <img
                 src={food.image
-                    ? `http://localhost:4000/${food.image}`
+                    ? `${BASE_URL}/${food.image}`
                     : "/img/food_image.png"}
                 className=" rounded-l-md object-cover"
                 style={{ height: "150px" }}

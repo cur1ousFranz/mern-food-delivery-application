@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { BasketContext } from "../../context/BasketContext";
+import { BASE_URL } from "../../constants";
 
 const BasketFood = ({ food }) => {
     const { basket, dispatch } = useContext(BasketContext)
@@ -33,7 +34,7 @@ const BasketFood = ({ food }) => {
                 <div className="w-1/2">
                     <img
                         src={food.image
-                            ? `http://localhost:4000/${food.image}`
+                            ? `${BASE_URL}/${food.image}`
                             : "/img/food_image.png"}
                         className="rounded-md object-cover p-1 shadow-sm border"
                         alt=""
