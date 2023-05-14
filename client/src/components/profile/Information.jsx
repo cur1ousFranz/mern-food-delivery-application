@@ -4,6 +4,7 @@ import { useContext } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import SessionExpired from "../SessionExpired"
 import alert from '../../alert'
+import ConfirmationModal from "../modals/ConfirmationModal"
 
 const Information = () => {
 
@@ -14,6 +15,8 @@ const Information = () => {
     const [sessionExpired, setSessionExpired] = useState(false)
     const [error, setError] = useState('')
     const [formErrorFields, setFormErrorFields] = useState([])
+
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
 
@@ -61,9 +64,9 @@ const Information = () => {
                 setSessionExpired(true)
                 return
             }
-            
-            if(error.response.data.error === 'Please fill in all fields.')
-            setError(error.response.data.error)
+
+            if (error.response.data.error === 'Please fill in all fields.')
+                setError(error.response.data.error)
             setFormErrorFields(error.response.data.errorFields)
         }
     }
@@ -72,35 +75,35 @@ const Information = () => {
         <>
             <form onSubmit={handleForm} className="px-12 space-y-4">
                 <div>
-                    <label>Name</label>
+                    <label className="text-gray-800">Name</label>
                     <input
                         onChange={(e) => setName(e.target.value)}
                         value={name}
                         type="text"
                         className={formErrorFields && formErrorFields.includes('name')
-                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md" 
+                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
                             : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
                 </div>
 
                 <div>
-                    <label>Contact Number</label>
+                    <label className="text-gray-800">Contact Number</label>
                     <input
                         onChange={(e) => setContactNumber(e.target.value)}
                         value={contactNumber}
                         type="text"
                         className={formErrorFields && formErrorFields.includes('contact_number')
-                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md" 
+                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
                             : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
                 </div>
 
                 <div>
-                    <label>Address</label>
+                    <label className="text-gray-800">Address</label>
                     <input
                         onChange={(e) => setAddress(e.target.value)}
                         value={address}
                         type="text"
                         className={formErrorFields && formErrorFields.includes('address')
-                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md" 
+                            ? "px-2 py-2 w-full border border-red-500 bg-gray-100 rounded-md"
                             : "px-2 py-2 w-full bg-gray-100 rounded-md"} />
                     {error && (
                         <p className="absolute text-sm text-red-500">{error}</p>
@@ -109,11 +112,21 @@ const Information = () => {
 
                 <div className="flex justify-end">
                     <button
+                        type="button"
+                        onClick={() => setShowModal(true)}
                         className="px-6 py-2 rounded-md text-white bg-gray-800 hover:bg-gray-600">
                         Save
                     </button>
                 </div>
             </form>
+
+            {showModal && (
+                <ConfirmationModal
+                    toggleModal={setShowModal}
+                    submit={handleForm}
+                    title={"Proceed to update information?"}
+                />
+            )}
 
             {sessionExpired && (
                 <SessionExpired />
