@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/AuthContext'
 import { useNavigate } from "react-router-dom";
 import axiosClient from "../../axios";
 import alert from "../../alert";
+import SessionExpired from "../../components/SessionExpired";
 
 const Checkout = () => {
     // TODO:: PLACE CUSTOMER ORDER, ADD ORDER PAGE
@@ -14,6 +15,7 @@ const Checkout = () => {
     const { basket } = useContext(BasketContext)
     const [totalPrice, setTotalPrice] = useState(0)
     const { user } = useContext(AuthContext)
+    const [sessionExpired, setSessionExpired] = useState(false)
 
     const paymentButton = async () => {
         if (!user) {
@@ -55,7 +57,10 @@ const Checkout = () => {
             alert('Order placed successfully')
 
         } catch (error) {
-            console.log(error)
+            if (error.response.data.error === 'Session Expired') {
+                setSessionExpired(true)
+                return
+            }
         }
 
     }
@@ -149,6 +154,10 @@ const Checkout = () => {
                     </div>
                 </div>
             </div>
+
+            {sessionExpired && (
+                <SessionExpired />
+            )}
         </div>
     );
 }
