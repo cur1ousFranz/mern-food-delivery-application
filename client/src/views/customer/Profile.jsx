@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Information from "../../components/profile/Information";
+import Credentials from "../../components/profile/Credentials";
 
 const Profile = () => {
     const [currentTab, setCurrentTab] = useState('Personal Information')
@@ -37,9 +38,12 @@ const Profile = () => {
 
                 <div className="w-full p-4 border-l">
 
-                    {/* PERSONAL INFORMATION */}
                     {currentTab === 'Personal Information' && (
                        <Information />
+                    )}
+
+                    {currentTab === 'Credentials' && (
+                       <Credentials />
                     )}
 
                 </div>
