@@ -14,9 +14,17 @@ const transactionRoutes = require('./routes/transaction')
 const storeRoutes = require('./routes/store')
 const businessTypeRoutes = require('./routes/businessType')
 
+// Websockets
+const wss = require('./websocketServer')
+wss.on('listening', () => {
+    console.log('Websocket server is running at port 8080')
+})
+
+
 // Middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
+
 
 app.use((req, res, next) => {
     console.log(req.method)
@@ -33,6 +41,7 @@ mongoose.connect(process.env.MONGO_URI)
         app.listen(process.env.PORT, () => {
             console.log('Listening to port', process.env.PORT);
         })
+        
     })
     .catch((err) => {
         console.log(err)
