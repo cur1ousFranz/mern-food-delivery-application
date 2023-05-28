@@ -9,7 +9,6 @@ import alert from "../../alert";
 import SessionExpired from "../../components/SessionExpired";
 
 const Checkout = () => {
-    // TODO:: PLACE CUSTOMER ORDER, ADD ORDER PAGE
     const navigate = useNavigate();
     const { dispatch } = useContext(BasketContext)
     const { basket } = useContext(BasketContext)
@@ -54,6 +53,7 @@ const Checkout = () => {
             basket.forEach(food => {
                 dispatch({ type: 'REMOVE_TO_BASKET', payload: { uuid: food.uuid } })
             })
+
             alert('Order placed successfully')
 
         } catch (error) {
