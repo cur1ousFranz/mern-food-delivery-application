@@ -1,14 +1,13 @@
-const server = require('http').createServer();
-const wss = require('socket.io')(server);
-
-wss.on('connection', socket => {
-    console.log('Websocket server is running at port 8080');
+const { Server } = require('socket.io')
+const io = new Server(5000, {
+  cors: {
+    origin: ['http://localhost:3000', 'http://localhost:3001']
+}
 })
 
-server.listen(8080, () => {
-    console.log('WebSocket server is running at port 8080');
-  });
+io.on('connection', (socket) => {
+  // ...
+})
 
-
-module.exports = wss
+module.exports = io
 
