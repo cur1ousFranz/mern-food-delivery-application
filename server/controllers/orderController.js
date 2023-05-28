@@ -3,6 +3,8 @@ const { isValidObjectId } = require('mongoose')
 const Order = require('../models/orderModel')
 const Customer = require('../models/customerModel')
 const extractUserId = require('../auth/extractUserId')
+// Websockets
+const io = require('../websocketServer')
 
 const getAllOrders = async (req, res) => {
     const user_id = extractUserId(req)
@@ -42,6 +44,9 @@ const storeOrder = async (req, res) => {
             payment_type,
             status
         })
+
+        io.emit('send-message', 'hey')
+        console.log('ran')
 
         res.status(200).json(order)
 
