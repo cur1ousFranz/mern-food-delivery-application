@@ -1,13 +1,16 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const SessionExpired = () => {
 
     const { dispatch } = useContext(AuthContext)
+    const navigate = useNavigate();
 
     const handleClick = () => {
         dispatch({ type: 'LOGOUT' })
         localStorage.removeItem('user')
+        navigate('/signin')
     }
 
     return (
