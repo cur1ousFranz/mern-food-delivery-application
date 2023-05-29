@@ -3,6 +3,8 @@ const Delivery = require('../models/deliveryModel')
 const Order = require('../models/orderModel')
 const Customer = require('../models/customerModel')
 const extractUserId = require('../auth/extractUserId')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const getAllDeliveries = async (req, res) => {
     const user_id = extractUserId(req)
@@ -19,40 +21,45 @@ const storeDelivery = async (req, res) => {
 
     const error = { error: 'Please fill in all field' }
 
-    if(!order_id){
+    if (!order_id) {
         return res.status(400).json(error)
     }
-    if(!status){
+    if (!status) {
         return res.status(400).json(error)
     }
-    if(!isValidObjectId(order_id)){
+    if (!isValidObjectId(order_id)) {
         return res.status(400).json({ error: "No such order" })
     }
 
     const order = await Order.findById({ _id: order_id })
 
-    if(!order) {
+    if (!order) {
         return res.status(404).json({ error: "No such order" })
     }
 
     try {
-        const delivery = await Delivery.create({ order_id, status, customer_id: customer._id })
+        const delivery = await Delivery.create({
+            order_id: new ObjectId(order_id),
+            status,
+            customer_id: new ObjectId(customer._id)
+        })
         res.status(200).json(delivery)
+        
     } catch (error) {
-        res.status(500).json({ error : error.message })
+        res.status(500).json({ error: error.message })
     }
 }
 
 const getDeliveryDetails = async (req, res) => {
     const { id } = req.params
 
-    if(!isValidObjectId(id)){
+    if (!isValidObjectId(id)) {
         return res.status(400).json({ error: "No such delivery" })
     }
 
     const delivery = await Delivery.findById({ _id: id })
 
-    if(!delivery){
+    if (!delivery) {
         return res.status(404).json({ error: "No such delivery" })
     }
 

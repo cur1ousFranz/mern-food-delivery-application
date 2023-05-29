@@ -3,11 +3,11 @@ const Schema = mongoose.Schema
 
 const deliverySchema = new Schema({
     order_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     customer_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     status: {

@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const foodSchema = new Schema({
     store_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     name: {

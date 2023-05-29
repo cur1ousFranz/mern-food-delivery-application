@@ -2,6 +2,8 @@ const { isValidObjectId } = require('mongoose')
 const createToken = require('../auth/createToken')
 const Customer = require('../models/customerModel')
 const User = require('../models/userModel')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const getAllCustomers = async (req, res) => {
     const customers = await Customer.find()
@@ -14,7 +16,12 @@ const storeCustomer = async (req, res) => {
 
     try {
         const user = await User.signup(email, password, role)
-        const customer = await Customer.create({ user_id: user._id, name: '', contact_number: '', address: '' })
+        const customer = await Customer.create({
+            user_id: new ObjectId(user._id),
+            name: '',
+            contact_number: '',
+            address: ''
+        })
         const token = createToken(user._id)
         res.status(200).json({ email, token, is_role: user.role, id: customer._id })
 

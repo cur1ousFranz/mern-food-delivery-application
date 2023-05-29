@@ -4,15 +4,15 @@ const Schema = mongoose.Schema
 
 const orderSchema = new Schema({
     customer_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     food_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: Boolean
     },
     store_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: Boolean
     },
     food_quantity: {

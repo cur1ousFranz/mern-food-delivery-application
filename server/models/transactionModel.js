@@ -3,19 +3,19 @@ const Schema = mongoose.Schema
 
 const transactionSchema = new Schema({
     order_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     store_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     customer_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     delivery_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     }
 }, { timestamps: true })

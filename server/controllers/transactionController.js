@@ -4,6 +4,8 @@ const Order = require('../models/orderModel')
 const Delivery = require('../models/deliveryModel')
 const Customer = require('../models/customerModel')
 const extractUserId = require('../auth/extractUserId')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const getAllTransactions = async (req, res) => {
     const user_id = extractUserId(req)
@@ -38,8 +40,14 @@ const storeTransaction = async (req, res) => {
     }
 
     try {
-        const transaction = await Transaction.create({ order_id, customer_id: customer._id, delivery_id })
+        const transaction = await Transaction.create({ 
+            order_id: new ObjectId(order_id), 
+            customer_id: new ObjectId(customer._id), 
+            delivery_id: new ObjectId(delivery_id)
+        })
+
         res.status(200).json(transaction)
+        
     } catch (error) {
         res.status(500).json({ error: error.message })
     }

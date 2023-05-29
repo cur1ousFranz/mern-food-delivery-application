@@ -5,6 +5,8 @@ const extractUserId = require('../auth/extractUserId')
 const multer = require('multer')
 const path = require('path')
 const fs = require('fs')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const getAllFoods = async (req, res) => {
     const foods = await Food.find()
@@ -53,7 +55,7 @@ const storeFood = async (req, res) => {
                 }
 
                 const food = await Food.create({ 
-                    store_id: store._id, 
+                    store_id: new ObjectId(store._id), 
                     name, description, 
                     category, price,
                     has_instructions, 
@@ -79,7 +81,7 @@ const getFoodDetails = async (req, res) => {
     }
 
     const food = await Food.findById({ _id: id })
-
+    
     if (!food) {
         return res.status(400).json({ error: "No such food product" })
     }

@@ -4,6 +4,8 @@ const createToken = require('../auth/createToken')
 const { isValidObjectId } = require('mongoose')
 const multer = require('multer')
 const path = require('path')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 
 const getAllStores = async (req, res) => {
     const stores = await Store.find()
@@ -47,7 +49,7 @@ const storeStore = async (req, res) => {
     try {
         const user = await User.signup(email, password, role)
         const store = await Store.create({
-            user_id: user._id,
+            user_id: new ObjectId(user._id),
             store_address,
             floor_suit,
             store_name,
