@@ -5,9 +5,5 @@ const io = new Server(5000, {
 }
 })
 
-io.on('connection', (socket) => {
-  // ...
-})
-
 module.exports = io
 
