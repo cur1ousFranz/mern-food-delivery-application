@@ -4,7 +4,8 @@ const router = express.Router()
 const { 
     getAllOrders, 
     storeOrder, 
-    getOrderDetails 
+    getOrderDetails,
+    getAllStoreOrders
 } = require('../controllers/orderController')
 
 // AUTH MIDDLEWARE
@@ -14,5 +15,6 @@ router.use(requireAuth)
 router.get('/api/orders', getAllOrders)
 router.post('/api/orders', storeOrder)
 router.get('/api/orders/:id', getOrderDetails)
+router.get('/api/orders/store/:id', getAllStoreOrders)
 
 module.exports = router
