@@ -13,6 +13,14 @@ const deliveryRoutes = require('./routes/delivery')
 const transactionRoutes = require('./routes/transaction')
 const storeRoutes = require('./routes/store')
 const businessTypeRoutes = require('./routes/businessType')
+const io = require('./websocketServer')
+
+io.on('connection', socket => {
+    socket.on('store-room', (room, callback) => {
+        socket.join(room)
+        callback('Joined')
+    })
+})
 
 // Middleware to parse URL-encoded request bodies
 app.use(express.urlencoded({ extended: true }));
