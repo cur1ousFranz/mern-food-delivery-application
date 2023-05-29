@@ -3,6 +3,8 @@ import { AuthContext } from "../../context/AuthContext";
 import axiosClient from '../../axios'
 import Foods from "../../components/menu_tab/Foods";
 import { FoodContext } from "../../context/FoodContext";
+import Dashboard from "../../components/menu_tab/Dashboard";
+import Orders from "../../components/menu_tab/Orders";
 
 const Store = () => {
     const { store } = useContext(AuthContext)
@@ -103,9 +105,19 @@ const Store = () => {
                 )}
             </div>
             <div className="w-full md:w-3/4">
+                {selectedTab === 'Dashboard' && (
+                    <Dashboard />
+                )}
+
                 {selectedTab === 'Foods' && storeData && foods && (
                     <Foods foods={foods} storeData={storeData} />
                 )}
+
+                {selectedTab === 'Orders' && storeData && foods && (
+                    <Orders />
+                )}
+
+                
             </div>
         </div>
     );
