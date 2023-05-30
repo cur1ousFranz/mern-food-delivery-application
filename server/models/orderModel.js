@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const orderSchema = new Schema({
     customer_id: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
     },
     food_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -14,6 +14,10 @@ const orderSchema = new Schema({
     store_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: Boolean
+    },
+    food_name: {
+        type: String,
+        required: true
     },
     food_quantity: {
         type: Number,

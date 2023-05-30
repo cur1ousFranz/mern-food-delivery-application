@@ -36,6 +36,7 @@ const Checkout = () => {
             orders.push({
                 food_id: _id,
                 store_id,
+                food_name: food.name,
                 food_quantity: foodQuantity,
                 has_choices,
                 choice_options,
