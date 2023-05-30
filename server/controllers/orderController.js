@@ -3,6 +3,8 @@ const { isValidObjectId } = require('mongoose')
 const Order = require('../models/orderModel')
 const Customer = require('../models/customerModel')
 const extractUserId = require('../auth/extractUserId')
+const mongoose = require('mongoose')
+const ObjectId = mongoose.Types.ObjectId
 // Websockets
 const io = require('../websocketServer')
 
@@ -18,6 +20,7 @@ const storeOrder = async (req, res) => {
     const {
         food_id,
         store_id,
+        food_name,
         food_quantity,
         has_choices,
         choice_options,
@@ -32,9 +35,10 @@ const storeOrder = async (req, res) => {
 
     try {
         const order = await Order.create({
-            customer_id: customer._id,
-            food_id,
-            store_id,
+            customer_id: new ObjectId(customer._id),
+            food_id: new ObjectId(food_id),
+            store_id: new ObjectId(store_id),
+            food_name,
             food_quantity,
             has_choices,
             choice_options,
@@ -45,9 +49,9 @@ const storeOrder = async (req, res) => {
             status
         })
 
-        io.emit('send-message', 'hey')
-        console.log('ran')
-
+        // Send the order details to specific store
+        // Might use the store id to act as a room of connection
+        io.to(order.store_id.toString()).emit('send-order-notif', order)
         res.status(200).json(order)
 
     } catch (error) {
@@ -71,8 +75,38 @@ const getOrderDetails = async (req, res) => {
     res.status(200).json(order)
 }
 
+const getAllStoreOrders = async (req, res) => {
+    const { id } = req.params
+
+    if (!isValidObjectId(id)) {
+        return res.status(404).json({ error: "No such store" })
+    }
+
+    // Look for related data in food collection
+    // The $unwind used to expect single element in array
+    const orders = await Order.aggregate([
+        {
+            $match: { store_id: new ObjectId(id) }
+        },
+        {
+            $lookup: {
+                from: 'foods',
+                localField: 'food_id',
+                foreignField: '_id',
+                as: 'food'
+            }
+        },
+        {
+            $unwind: '$food'
+        }
+    ])
+
+    res.status(200).json(orders)
+}
+
 module.exports = {
     getAllOrders,
     storeOrder,
-    getOrderDetails
+    getOrderDetails,
+    getAllStoreOrders
 }
