@@ -36,7 +36,6 @@ const Orders = () => {
         socket.on('connect', () => {
             socket.on('send-order-notif', (order) => {
                 dispatch({ type: 'ADD_ORDER', payload: order })
-                console.log(order)
             })
         })
 
@@ -70,13 +69,13 @@ const Orders = () => {
                     <div
                         key={order._id}
                         className="p-4 my-3 cursor-pointer border grid grid-cols-5 rounded-sm hover:shadow-md">
-                        <p>{order.food.name}</p>
+                        <p>{order.food_name}</p>
 
                         <div>
                             {order.choice_options.map((choice, index) => (
                                 <div key={index} className="px-4">
-                 
-                                    <p className="font-semibold text-gray-700">
+
+                                    <p className="font-semibold text-sm text-gray-700">
                                         {choice.choiceTitle}: {choice.selectedOption.map((option, index) => (
                                             <span
                                                 key={index}
@@ -99,12 +98,19 @@ const Orders = () => {
                         </div>
 
                         <p className="text-center">{order.food_quantity}</p>
-                        <p className="text-center"> <span className="text-lg text-orange-500">₱ </span>{order.total_price.toLocaleString()}</p>
-                        <p className={order.status === 'Pending'
-                            ? "mx-auto px-2 py-1 rounded-sm w-fit h-fit text-gray-700 bg-orange-300 hover:bg-orange-400"
-                            : "mx-auto px-2 py-1 rounded-sm w-fit h-fit text-gray-700 bg-green-300 hover:bg-green-400"}>
-                            {order.status}
-                        </p>
+                        <p className="text-center">
+                            <span className="text-lg text-orange-500">₱ </span>{order.total_price.toLocaleString()}</p>
+                        <div className="space-y-3">
+                            <p className={order.status === 'Pending'
+                                ? "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-orange-300 hover:bg-orange-400"
+                                : "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-green-300 hover:bg-green-400"}>
+                                {order.status}
+                            </p>
+                            <p className="mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-gray-300 hover:bg-gray-400">
+                                Complete
+                            </p>
+
+                        </div>
                     </div>
                 ))}
             </div>
