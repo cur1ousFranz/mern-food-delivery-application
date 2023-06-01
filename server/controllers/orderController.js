@@ -84,22 +84,7 @@ const getAllStoreOrders = async (req, res) => {
 
     // Look for related data in food collection
     // The $unwind used to expect single element in array
-    const orders = await Order.aggregate([
-        {
-            $match: { store_id: new ObjectId(id) }
-        },
-        {
-            $lookup: {
-                from: 'foods',
-                localField: 'food_id',
-                foreignField: '_id',
-                as: 'food'
-            }
-        },
-        {
-            $unwind: '$food'
-        }
-    ])
+    const orders = await Order.find({ store_id: id}).sort({ createdAt: -1})
 
     res.status(200).json(orders)
 }
