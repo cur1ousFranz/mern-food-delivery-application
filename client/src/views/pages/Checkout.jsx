@@ -61,7 +61,6 @@ const Checkout = () => {
         } catch (error) {
             if (error.response.data.error === 'Session Expired') {
                 setSessionExpired(true)
-                return
             }
         }
 
