@@ -5,12 +5,14 @@ import Foods from "../../components/menu_tab/Foods";
 import { FoodContext } from "../../context/FoodContext";
 import Dashboard from "../../components/menu_tab/Dashboard";
 import Orders from "../../components/menu_tab/Orders";
+import SessionExpired from "../../components/SessionExpired";
 
 const Store = () => {
     const { store } = useContext(AuthContext)
     const [storeData, setStoreData] = useState([])
     const { foods, dispatch } = useContext(FoodContext)
     const [selectedTab, setSelectedTab] = useState('Dashboard')
+    const [sessionExpired, setSessionExpired] = useState(false)
 
     useEffect(() => {
 
@@ -23,7 +25,9 @@ const Store = () => {
                     setStoreData(data)
                 }
             } catch (error) {
-                console.log(error)
+                if (error.response.data.error === 'Session Expired') {
+                    setSessionExpired(true)
+                }
             }
 
         }
@@ -119,6 +123,10 @@ const Store = () => {
 
                 
             </div>
+
+            {sessionExpired && (
+                <SessionExpired />
+            )}
         </div>
     );
 }

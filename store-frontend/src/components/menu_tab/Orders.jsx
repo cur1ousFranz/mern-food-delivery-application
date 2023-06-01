@@ -5,11 +5,13 @@ import { AuthContext } from "../../context/AuthContext";
 
 import { io } from 'socket.io-client'
 import { WEBSOCKET_URL } from '../../constants'
+import SessionExpired from "../SessionExpired";
 
 const Orders = () => {
 
     const { orders, dispatch } = useContext(OrderContext)
     const { store } = useContext(AuthContext)
+    const [sessionExpired, setSessionExpired] = useState(false)
 
     useEffect(() => {
 
@@ -21,7 +23,9 @@ const Orders = () => {
                     dispatch({ type: 'SET_ORDERS', payload: data })
                 }
             } catch (error) {
-                console.log(error)
+                if (error.response.data.error === 'Session Expired') {
+                    setSessionExpired(true)
+                }
             }
         }
 
@@ -42,7 +46,7 @@ const Orders = () => {
         // Create websocket room with store id
         if (store) {
             socket.emit('store-room', store.id, message => {
-                console.log(message)
+                // console.log(message)
             })
         }
 
@@ -68,8 +72,9 @@ const Orders = () => {
                 {orders && orders.map(order => (
                     <div
                         key={order._id}
-                        className="p-4 my-3 cursor-pointer border grid grid-cols-5 rounded-sm hover:shadow-md">
-                        <p>{order.food_name}</p>
+                        className="p-4 my-3 cursor-pointer border grid grid-cols-5 rounded-md hover:shadow-md">
+                        <p className="font-semibold">{order.food_name}</p>
+                        {/* <small className="text-muted px-1">{moment(order.created_at).fromNow()}</small> */}
 
                         <div>
                             {order.choice_options.map((choice, index) => (
@@ -98,22 +103,30 @@ const Orders = () => {
                         </div>
 
                         <p className="text-center">{order.food_quantity}</p>
+
                         <p className="text-center">
-                            <span className="text-lg text-orange-500">₱ </span>{order.total_price.toLocaleString()}</p>
+                            <span className="text-lg text-orange-500">₱ </span>
+                            {order.total_price.toLocaleString()}
+                        </p>
+
                         <div className="space-y-3">
                             <p className={order.status === 'Pending'
-                                ? "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-orange-300 hover:bg-orange-400"
+                                ? "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-yellow-300 hover:bg-yellow-400"
                                 : "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-green-300 hover:bg-green-400"}>
                                 {order.status}
                             </p>
-                            <p className="mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-gray-300 hover:bg-gray-400">
+                            {/* <p className="mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-gray-300 hover:bg-gray-400">
                                 Complete
-                            </p>
+                            </p> */}
 
                         </div>
                     </div>
                 ))}
             </div>
+
+            {sessionExpired && (
+                <SessionExpired />
+            )}
         </div>
     )
 }
