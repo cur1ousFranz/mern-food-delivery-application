@@ -50,7 +50,7 @@ const storeOrder = async (req, res) => {
         })
 
         // Send the order details to specific store
-        // Might use the store id to act as a room of connection
+        // Using the store id to act as a room id
         io.to(order.store_id.toString()).emit('send-order-notif', order)
         res.status(200).json(order)
 
@@ -75,6 +75,23 @@ const getOrderDetails = async (req, res) => {
     res.status(200).json(order)
 }
 
+const updateOrder = async (req, res) => {
+    const { id } = req.params
+    const updated = req.body
+
+    if (!isValidObjectId(id)) {
+        return res.status(404).json({ error: "No such order" })
+    }
+
+    const order = await Order.findByIdAndUpdate({ _id: id }, { ...updated })
+
+    if(!order) {
+        return res.status(404).json({error: 'No such order'})
+    }
+
+    res.status(200).json(order)
+}
+
 const getAllStoreOrders = async (req, res) => {
     const { id } = req.params
 
@@ -82,9 +99,7 @@ const getAllStoreOrders = async (req, res) => {
         return res.status(404).json({ error: "No such store" })
     }
 
-    // Look for related data in food collection
-    // The $unwind used to expect single element in array
-    const orders = await Order.find({ store_id: id}).sort({ createdAt: -1})
+    const orders = await Order.find({ store_id: id })
 
     res.status(200).json(orders)
 }
@@ -93,5 +108,6 @@ module.exports = {
     getAllOrders,
     storeOrder,
     getOrderDetails,
+    updateOrder,
     getAllStoreOrders
 }
