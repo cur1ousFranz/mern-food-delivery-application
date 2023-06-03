@@ -6,12 +6,16 @@ import { AuthContext } from "../../context/AuthContext";
 import { io } from 'socket.io-client'
 import { WEBSOCKET_URL } from '../../constants'
 import SessionExpired from "../SessionExpired";
+import PendingOrders from "../sub_menu_tab/PendingOrders";
+import CompletedOrders from "../sub_menu_tab/CompletedOrders";
 
 const Orders = () => {
 
     const { orders, dispatch } = useContext(OrderContext)
     const { store } = useContext(AuthContext)
     const [sessionExpired, setSessionExpired] = useState(false)
+    const [isPendingButton, setIsPendingButton] = useState(true)
+    const [currentOrders, setCurrentOrders] = useState([])
 
     useEffect(() => {
 
@@ -58,9 +62,29 @@ const Orders = () => {
 
     }, [])
 
+    /**
+     * TODO:: UPDATE ALSO THE COMPLETED ORDERS
+     */
+
     return (
-        <div>
-            <div className="p-4">
+        <div className="p-4">
+            <div>
+                <div className="flex space-x6">
+                    <button
+                        onClick={() => setIsPendingButton(true)}
+                        className={isPendingButton
+                            ? "px-2 py-1 rounded-l-sm border bg-yellow-300"
+                            : "px-2 py-1 rounded-l-sm border bg-gray-100 hover:bg-gray-300"}>
+                        Pending Orders
+                    </button>
+                    <button
+                        onClick={() => setIsPendingButton(false)}
+                        className={!isPendingButton
+                            ? "px-2 py-1 rounded-r-sm border bg-green-300"
+                            : "px-2 py-1 rounded-r-sm border bg-gray-100 hover:bg-gray-300"}>
+                        Completed Orders
+                    </button>
+                </div>
                 {/* Get food name, quantity, choices, total, status, order time */}
                 <div className="text-center grid grid-cols-5 p-4 font-semibold my-3 border rounded-sm text-gray-700">
                     <h1>Name</h1>
@@ -69,59 +93,14 @@ const Orders = () => {
                     <h1>Total</h1>
                     <h1>Status</h1>
                 </div>
-                {orders && orders.map(order => (
-                    <div
-                        key={order._id}
-                        className="p-4 my-3 cursor-pointer border grid grid-cols-5 rounded-md hover:shadow-md">
-                        <p className="font-semibold">{order.food_name}</p>
-                        {/* <small className="text-muted px-1">{moment(order.created_at).fromNow()}</small> */}
 
-                        <div>
-                            {order.choice_options.map((choice, index) => (
-                                <div key={index} className="px-4">
+                {isPendingButton && (
+                    <PendingOrders orders={currentOrders} />
+                )}
 
-                                    <p className="font-semibold text-sm text-gray-700">
-                                        {choice.choiceTitle}: {choice.selectedOption.map((option, index) => (
-                                            <span
-                                                key={index}
-                                                className="text-sm font-normal me-1 text-gray-700">
-                                                {option.optionName},
-                                            </span>
-                                        ))}
-                                    </p>
-
-
-                                </div>
-                            ))}
-
-                            {order.has_instructions && order.instruction && (
-                                <h1 className="mt-4 font-semibold px-2 py-4 shadow-sm rounded-sm text-gray-700 bg-gray-100">Note:
-                                    <span className="font-normal"> {order.instruction}</span>
-                                </h1>
-                            )}
-
-                        </div>
-
-                        <p className="text-center">{order.food_quantity}</p>
-
-                        <p className="text-center">
-                            <span className="text-lg text-orange-500">₱ </span>
-                            {order.total_price.toLocaleString()}
-                        </p>
-
-                        <div className="space-y-3">
-                            <p className={order.status === 'Pending'
-                                ? "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-yellow-300 hover:bg-yellow-400"
-                                : "mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-green-300 hover:bg-green-400"}>
-                                {order.status}
-                            </p>
-                            {/* <p className="mx-auto text-sm px-2 py-1 rounded-full w-fit h-fit text-gray-700 bg-gray-300 hover:bg-gray-400">
-                                Complete
-                            </p> */}
-
-                        </div>
-                    </div>
-                ))}
+                {!isPendingButton && (
+                    <CompletedOrders orders={currentOrders} />
+                )}
             </div>
 
             {sessionExpired && (
