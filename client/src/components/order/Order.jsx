@@ -74,9 +74,9 @@ const Order = ({ order }) => {
                             </h1>
                         )}
                     </div>
-
                 </div>
             )}
+            <hr className="mt-2" />
         </div>
     );
 }

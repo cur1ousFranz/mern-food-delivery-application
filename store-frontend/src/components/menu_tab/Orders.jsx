@@ -66,6 +66,11 @@ const Orders = () => {
      * TODO:: UPDATE ALSO THE COMPLETED ORDERS
      */
 
+    useEffect(() => {
+        setCurrentOrders(orders)
+        
+    }, [orders])
+
     return (
         <div className="p-4">
             <div>
