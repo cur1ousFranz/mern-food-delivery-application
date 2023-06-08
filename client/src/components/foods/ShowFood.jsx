@@ -248,7 +248,7 @@ const ShowFood = ({ selectFood, selectedFood }) => {
 
                     <p className="font-semibold text-2xl text-orange-500">
                         <span className="text-lg md:text-4xl">₱ </span>
-                        {(selectedFood.price + choicesPrice) * foodQuantity}
+                        {((selectedFood.price + choicesPrice) * foodQuantity).toLocaleString()}
                     </p>
                     <div className="flex">
                         <button
